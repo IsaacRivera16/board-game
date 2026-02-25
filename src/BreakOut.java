@@ -18,7 +18,7 @@ class BreakOut extends JPanel implements Runnable, KeyListener
 
     public BreakOut() // create all instance in here
     {
-//
+// breakout
 
         keys = new boolean[5];
         background = new Brick(0,0,800,800);
