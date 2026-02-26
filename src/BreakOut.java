@@ -23,7 +23,7 @@ class BreakOut extends JPanel implements Runnable, KeyListener
 
 
         keys = new boolean[5];
-        background = new Brick(0,0,800,800);
+        //background = new Brick(0,0,800,800);
         r1= new Ball(203,90,30,30,"red");
         r2= new Ball(98,90,30,30,"red");
         r3= new Ball(203,195,30,30,"red");
@@ -45,6 +45,71 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         b4= new Ball(98,670,30,30,"blue");
 
 
+        int currentx=0;
+        int currenty=0;
+        int howMuch=60;
+        for(int x=0; x<grid.length; x++){
+            for(int i=0; i<grid[0].length; i++){
+                grid[x][i]=new Square(currentx,currenty,howMuch,howMuch,Color.white);
+                currentx+=howMuch;
+            }
+            currenty+=howMuch;
+            currentx=0;
+        }
+
+        for(int r=0,c=0; r<grid.length && c<grid[0].length; r++,c++){
+            if(r<6){
+                if(c<6){
+                    grid[r][c].setColor(Color.blue);
+                }
+                if(c>9){
+                    grid[r][c].setColor(Color.green);
+                }
+            }
+            if(r>9){
+                if(c<6){
+                    grid[r][c].setColor(Color.red);
+                }
+                if(c>9){
+                    grid[r][c].setColor(Color.yellow);
+                }
+            }
+            if(r>0 && r<=6){
+                if(c==8){
+                    grid[r][c].setColor(Color.green);
+                }
+                if(r==1 && c==9){
+                    grid[r][c].setColor(Color.green);
+                }
+            }
+            if(r>7){
+                if(c==8){
+                    grid[r][c].setColor(Color.red);
+                }
+                if (r==grid.length-2 && c==7){
+                    grid[r][c].setColor(Color.red);
+                }
+            }
+            if(c>0 && c<=6){
+                if(r==7){
+                    grid[r][c].setColor(Color.blue);
+                }
+                if(c==1 && r==6){
+                    grid[r][c].setColor(Color.blue);
+                }
+            }
+            if(c>7){
+                if(r==7){
+                    grid[r][c].setColor(Color.yellow);
+                }
+                if(c==grid.length-2 && r==8){
+                    grid[r][c].setColor(Color.yellow);
+                }
+            }
+            else{
+                grid[r][c].setColor(Color.white);
+            }
+        }
 
         addKeyListener( this );    //
         setFocusable( true );     // Do NOT DELETE these three lines
@@ -53,7 +118,7 @@ class BreakOut extends JPanel implements Runnable, KeyListener
 
     public void paint( Graphics window )// all other paint methods and game logic goes in here.
     {
-        background.paint(window);
+        //background.paint(window);
         r1.paint(window);
         r2.paint(window);
         r3.paint(window);
@@ -74,6 +139,12 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         y3.paint(window);
         y4.paint(window);
 
+
+        for(Square[] x:grid){
+            for(Square i :x){
+                i.paint(window);
+            }
+        }
 
     }
 
