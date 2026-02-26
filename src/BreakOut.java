@@ -10,15 +10,17 @@ class BreakOut extends JPanel implements Runnable, KeyListener
     private boolean[] keys;
     private Brick background;
     private Ball r1,r2,r3,r4,g1,g2,g3,g4,y1,y2,y3,y4,b1,b2,b3,b4;
+    private Square[][] grid;
     private ArrayList< Brick > bricks;
     private boolean gameOver=false;
     private boolean gameStart=false;
     private boolean alive=false;
-    private Brick[][] grid;
 
     public BreakOut() // create all instance in here
     {
 // breakout
+        grid=new Square[15][15];
+
 
         keys = new boolean[5];
         background = new Brick(0,0,800,800);
