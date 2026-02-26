@@ -57,16 +57,20 @@ public class Ball extends Brick
     public void paint( Graphics window )
     {
         if(color.equals("red")){
-            window.setColor(Color.RED);
+            Color myColor = new Color(255, 0, 0);
+            window.setColor(myColor);
         }
         else if(color.equals("blue")){
-            window.setColor(Color.BLUE);
+            Color myColor = new Color(48, 111, 255);
+            window.setColor(myColor);
         }
         else if(color.equals("green")){
-            window.setColor(Color.GREEN);
+            Color myColor = new Color(0, 159, 11);
+            window.setColor(myColor);
         }
         else{
-            window.setColor(Color.YELLOW);
+            Color myColor = new Color(255, 255, 0);
+            window.setColor(myColor);
         }
         window.fillOval(getX(),getY(),getW(),getH());
         window.setColor(Color.BLACK);

@@ -31,6 +31,6 @@ public class Square extends Canvas {
     public void paint(Graphics window){
         setColor(color);
         Rectangle squ = new Rectangle(x,y,w,h);
-        window.fill;
+
     }
 }

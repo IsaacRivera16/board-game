@@ -33,7 +33,7 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         g2= new Ball(573,90,30,30,"green");
         g3= new Ball(678,195,30,30,"green");
         g4= new Ball(573,195,30,30,"green");
-//
+
         y1= new Ball(678,565,30,30,"yellow");
         y2= new Ball(573,565,30,30,"yellow");
         y3= new Ball(678,670,30,30,"yellow");
@@ -49,7 +49,6 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         addKeyListener( this );    //
         setFocusable( true );     // Do NOT DELETE these three lines
         new Thread(this).start();
-        r1.setY(r1.getY() + 50);
     }
 
     public void paint( Graphics window )// all other paint methods and game logic goes in here.
