@@ -47,6 +47,7 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         addKeyListener( this );    //
         setFocusable( true );     // Do NOT DELETE these three lines
         new Thread(this).start();
+        r1.setY(r1.getY() + 50);
     }
 
     public void paint( Graphics window )// all other paint methods and game logic goes in here.
@@ -71,7 +72,10 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         y2.paint(window);
         y3.paint(window);
         y4.paint(window);
+
+
     }
+
     // only edit if you would like to add more key functions
     public void keyPressed(KeyEvent e)
     {

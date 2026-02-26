@@ -31,31 +31,10 @@ public class Ball extends Brick
         color=co;
     }
     public void paddleBounce(){
-        speedY = -Math.abs(speedY);
         setY(getY() - 5);
     }
-    public void brickBounce(){
-        speedY=-speedY;
-    }
-    public void upSpeed()
-    {
-        a++;
-        b--;
-        if(speedX>0){
-            speedX++;
-        }
-        else{
-            speedX--;
-        }
-        if(speedY>0){
-            speedY++;
-        }
-        else{
-            speedY--;
-        }
-        System.out.println("Ball speed increased! New SpeedX: " + a + " SpeedY: " + b);
-
-
+    public void brickBounce() {
+        speedY = -speedY;
     }
     public void setSpeedX(int newSpeedX) {
         this.speedX = newSpeedX;
