@@ -68,6 +68,7 @@ public class Ball extends Brick
             Color myColor = new Color(0, 159, 11);
             window.setColor(myColor);
         }
+        //
         else{
             Color myColor = new Color(255, 255, 0);
             window.setColor(myColor);
