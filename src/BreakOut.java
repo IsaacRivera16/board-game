@@ -76,6 +76,7 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         }
 
 
+
         currenty=0;
         for(int r=0; r<grid.length; r++){
             for(int c=0; c<grid[0].length; c++){
