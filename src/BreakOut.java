@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -8,6 +9,7 @@ import java.util.prefs.Preferences;
 class BreakOut extends JPanel implements Runnable, KeyListener
 {
     private boolean[] keys;
+    private ArrayList<ArrayList<Ball>> players;
     private Brick background;
     private Ball r1,r2,r3,r4,g1,g2,g3,g4,y1,y2,y3,y4,b1,b2,b3,b4;
     private Square[][] grid;
@@ -19,35 +21,51 @@ class BreakOut extends JPanel implements Runnable, KeyListener
     public BreakOut() // create all instance in here
     {
 // breakout
+        setSize(750,750);
         grid=new Square[15][15];
+        players = new ArrayList<>();
+
+        ArrayList<Ball> red = new ArrayList<>();
+        ArrayList<Ball> blue = new ArrayList<>();
+        ArrayList<Ball> yellow = new ArrayList<>();
+        ArrayList<Ball> green = new ArrayList<>();
+
+
+        //Adding blue players
+        blue.add(new Ball(203,90,30,30,"blue"));
+        blue.add(new Ball(98,90,30,30,"blue"));
+        blue.add(new Ball(203,195,30,30,"blue"));
+        blue.add(new Ball(98,195,30,30,"blue"));
+
+        //Adding green players
+        green.add(new Ball(678,90,30,30,"green"));
+        green.add(new Ball(573,90,30,30,"green"));
+        green.add(new Ball(678,195,30,30,"green"));
+        green.add(new Ball(573,195,30,30,"green"));
+
+        //Adding red players
+        red.add(new Ball(203,565,30,30,"red"));
+        red.add(new Ball(98,565,30,30,"red"));
+        red.add(new Ball(203,670,30,30,"red"));
+        red.add( new Ball(98,670,30,30,"red"));
+
+        //Adding yellow player
+        yellow.add(new Ball(678,565,30,30,"yellow"));
+        yellow.add(new Ball(573,565,30,30,"yellow"));
+        yellow.add(new Ball(678,670,30,30,"yellow"));
+        yellow.add(new Ball(573,670,30,30,"yellow"));
+
+        players.add(blue);
+        players.add(green);
+        players.add(red);
+        players.add(yellow);
 
 
         keys = new boolean[5];
-        //background = new Brick(0,0,800,800);
-        r1= new Ball(203,90,30,30,"red");
-        r2= new Ball(98,90,30,30,"red");
-        r3= new Ball(203,195,30,30,"red");
-        r4= new Ball(98,195,30,30,"red");
-
-        g1= new Ball(678,90,30,30,"green");
-        g2= new Ball(573,90,30,30,"green");
-        g3= new Ball(678,195,30,30,"green");
-        g4= new Ball(573,195,30,30,"green");
-
-        y1= new Ball(678,565,30,30,"yellow");
-        y2= new Ball(573,565,30,30,"yellow");
-        y3= new Ball(678,670,30,30,"yellow");
-        y4= new Ball(573,670,30,30,"yellow");
-
-        b1= new Ball(203,565,30,30,"blue");
-        b2= new Ball(98,565,30,30,"blue");
-        b3= new Ball(203,670,30,30,"blue");
-        b4= new Ball(98,670,30,30,"blue");
-
 
         int currentx=0;
         int currenty=0;
-        int howMuch=60;
+        int howMuch=50;
         for(int x=0; x<grid.length; x++){
             for(int i=0; i<grid[0].length; i++){
                 grid[x][i]=new Square(currentx,currenty,howMuch,howMuch,Color.white);
@@ -57,59 +75,83 @@ class BreakOut extends JPanel implements Runnable, KeyListener
             currentx=0;
         }
 
-        for(int r=0,c=0; r<grid.length && c<grid[0].length; r++,c++){
-            if(r<6){
-                if(c<6){
-                    grid[r][c].setColor(Color.blue);
+
+        currenty=0;
+        for(int r=0; r<grid.length; r++){
+            for(int c=0; c<grid[0].length; c++){
+                //The prison things
+                if(r<6){
+                    if(c<6){
+                        grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.blue);
+                    }
+                    if(c>8){
+                        grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.green);
+                    }
                 }
-                if(c>9){
-                    grid[r][c].setColor(Color.green);
+
+                if(r>8){
+                    if(c<6){
+                        grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.red);
+                    }
+                    if(c>8){
+                        grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.yellow);
+                    }
+
                 }
+
+                //Entrance onto board and pathways
+                if(r>0 && r<=6){
+                    if(c==7){
+                        grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.green);
+                        grid[r][c].setSafe(true);
+                    }
+                    if(r==1 && c==8){
+                        grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.green);
+                        grid[r][c].setSafe(true);
+                    }
+                }
+                if(r>7&&r<grid.length-1){
+                    if(c==7){
+                        grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.red);
+                        grid[r][c].setSafe(true);
+                    }
+                    if (r==grid.length-2 && c==6){
+                        grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.red);
+                        grid[r][c].setSafe(true);}
+                }
+                if(c>0 && c<=6){
+                    if(r==7){
+                        grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.blue);
+                        grid[r][c].setSafe(true);
+                    }
+                    if(c==1 && r==6){
+                        grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.blue);
+                        grid[r][c].setSafe(true);
+                    }
+                }
+                if(c>7&&c<grid.length-1){
+                    if(r==7){
+                        grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.yellow);
+                        grid[r][c].setSafe(true);
+                    }
+                    if(c==grid.length-2 && r==8){
+                        grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.yellow);
+                        grid[r][c].setSafe(true);
+                    }
+                }
+                currentx+=howMuch;
+
+
             }
-            if(r>9){
-                if(c<6){
-                    grid[r][c].setColor(Color.red);
-                }
-                if(c>9){
-                    grid[r][c].setColor(Color.yellow);
-                }
-            }
-            if(r>0 && r<=6){
-                if(c==8){
-                    grid[r][c].setColor(Color.green);
-                }
-                if(r==1 && c==9){
-                    grid[r][c].setColor(Color.green);
-                }
-            }
-            if(r>7){
-                if(c==8){
-                    grid[r][c].setColor(Color.red);
-                }
-                if (r==grid.length-2 && c==7){
-                    grid[r][c].setColor(Color.red);
-                }
-            }
-            if(c>0 && c<=6){
-                if(r==7){
-                    grid[r][c].setColor(Color.blue);
-                }
-                if(c==1 && r==6){
-                    grid[r][c].setColor(Color.blue);
-                }
-            }
-            if(c>7){
-                if(r==7){
-                    grid[r][c].setColor(Color.yellow);
-                }
-                if(c==grid.length-2 && r==8){
-                    grid[r][c].setColor(Color.yellow);
-                }
-            }
-            else{
-                grid[r][c].setColor(Color.white);
-            }
+            currenty+=howMuch;
+            currentx=0;
+
         }
+        //Safe spots
+        grid[2][6].setSafe(true); grid[2][6].setColor(Color.MAGENTA);
+        grid[8][2].setSafe(true); grid[8][2].setColor(Color.MAGENTA);
+        grid[6][12].setSafe(true);  grid[6][12].setColor(Color.MAGENTA);
+        grid[12][8].setSafe(true);  grid[12][8].setColor(Color.MAGENTA);
 
         addKeyListener( this );    //
         setFocusable( true );     // Do NOT DELETE these three lines
@@ -119,29 +161,40 @@ class BreakOut extends JPanel implements Runnable, KeyListener
     public void paint( Graphics window )// all other paint methods and game logic goes in here.
     {
         //background.paint(window);
-        r1.paint(window);
-        r2.paint(window);
-        r3.paint(window);
-        r4.paint(window);
+        int middleBoard=grid[7][7].getCenter();
 
-        g1.paint(window);
-        g2.paint(window);
-        g3.paint(window);
-        g4.paint(window);
+        int[] triCorner1X = {grid[6][6].x,middleBoard,grid[6][8].x+grid[6][8].w};
+        int[] triCorner1Y = {grid[6][6].y,middleBoard,grid[6][8].y};
+        int[] triCorner2X = {grid[6][6].x,middleBoard,grid[8][6].x};
+        int[] triCorner2Y = {grid[6][6].y,middleBoard,grid[8][6].y+grid[8][6].h};
+        int[] triCorner3X = {grid[8][6].x,middleBoard,grid[8][8].x+grid[8][8].w};
+        int[] triCorner3Y = {grid[8][6].y+grid[8][6].h,middleBoard,grid[8][8].y+grid[8][8].h};
+        int[] triCorner4X = {grid[6][8].x+grid[6][8].w,middleBoard,grid[8][8].x+grid[8][8].w};
+        int[] triCorner4Y = {grid[6][8].y,middleBoard,grid[8][8].y+grid[8][8].h};
 
-        b1.paint(window);
-        b2.paint(window);
-        b3.paint(window);
-        b4.paint(window);
+        Polygon tri1= new Polygon(triCorner1X, triCorner1Y,3);
+        Polygon tri2= new Polygon(triCorner2X, triCorner2Y,3);
+        Polygon tri3= new Polygon(triCorner3X, triCorner3Y,3);
+        Polygon tri4= new Polygon(triCorner4X, triCorner4Y,3);
 
-        y1.paint(window);
-        y2.paint(window);
-        y3.paint(window);
-        y4.paint(window);
 
 
         for(Square[] x:grid){
-            for(Square i :x){
+            for(Square i:x){
+                i.paint(window);
+            }
+        }
+        window.setColor(Color.green);
+        window.fillPolygon(tri1);
+        window.setColor(Color.blue);
+        window.fillPolygon(tri2);
+        window.setColor(Color.red);
+        window.fillPolygon(tri3);
+        window.setColor(Color.yellow);
+        window.fillPolygon(tri4);
+
+        for(ArrayList<Ball> x:players){
+            for(Ball i: x){
                 i.paint(window);
             }
         }

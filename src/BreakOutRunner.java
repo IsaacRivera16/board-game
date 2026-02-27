@@ -3,8 +3,8 @@ import javax.swing.*;
 
 class BreakOutRunner extends JFrame
 {
-    private static final int WIDTH = 900;
-    private static final int HEIGHT = 900;
+    private static final int WIDTH = 750;
+    private static final int HEIGHT = 750;
 
 
     public BreakOutRunner()
