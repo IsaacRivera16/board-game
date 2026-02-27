@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.util.prefs.Preferences;
 
 
+
+
 class BreakOut extends JPanel implements Runnable, KeyListener
 {
     private boolean[] keys;
@@ -17,6 +19,8 @@ class BreakOut extends JPanel implements Runnable, KeyListener
     private boolean gameOver=false;
     private boolean gameStart=false;
     private boolean alive=false;
+    private Square dice;
+
 
     public BreakOut() // create all instance in here
     {
@@ -24,11 +28,15 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         setSize(750,750);
         grid=new Square[15][15];
         players = new ArrayList<>();
+        dice= new Square(340,340, 70,70, Color.LIGHT_GRAY);
+
 
         ArrayList<Ball> red = new ArrayList<>();
         ArrayList<Ball> blue = new ArrayList<>();
         ArrayList<Ball> yellow = new ArrayList<>();
         ArrayList<Ball> green = new ArrayList<>();
+
+
 
 
         //Adding blue players
@@ -37,11 +45,13 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         blue.add(new Ball(185,85,30,30,"blue"));
         blue.add(new Ball(85,185,30,30,"blue"));
 
+
         //Adding green players
         green.add(new Ball(535,85,30,30,"green"));
         green.add(new Ball(535,185,30,30,"green"));
         green.add(new Ball(635,85,30,30,"green"));
         green.add(new Ball(635,185,30,30,"green"));
+
 
         //Adding red players
         red.add(new Ball(85,635,30,30,"red"));
@@ -49,11 +59,13 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         red.add(new Ball(85,535,30,30,"red"));
         red.add( new Ball(185,535,30,30,"red"));
 
+
         //Adding yellow player
         yellow.add(new Ball(535,635,30,30,"yellow"));
         yellow.add(new Ball(535,535,30,30,"yellow"));
         yellow.add(new Ball(635,535,30,30,"yellow"));
         yellow.add(new Ball(635,635,30,30,"yellow"));
+
 
         players.add(blue);
         players.add(green);
@@ -61,7 +73,10 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         players.add(yellow);
 
 
+
+
         keys = new boolean[5];
+
 
         int currentx=0;
         int currenty=0;
@@ -74,6 +89,8 @@ class BreakOut extends JPanel implements Runnable, KeyListener
             currenty+=howMuch;
             currentx=0;
         }
+
+
 
 
         currenty=0;
@@ -89,6 +106,7 @@ class BreakOut extends JPanel implements Runnable, KeyListener
                     }
                 }
 
+
                 if(r>8){
                     if(c<6){
                         grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.red);
@@ -97,7 +115,9 @@ class BreakOut extends JPanel implements Runnable, KeyListener
                         grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.yellow);
                     }
 
+
                 }
+
 
                 //Entrance onto board and pathways
                 if(r>0 && r<=6){
@@ -142,9 +162,12 @@ class BreakOut extends JPanel implements Runnable, KeyListener
                 currentx+=howMuch;
 
 
+
+
             }
             currenty+=howMuch;
             currentx=0;
+
 
         }
         //Safe spots
@@ -153,15 +176,36 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         grid[6][12].setSafe(true);  grid[6][12].setColor(Color.MAGENTA);
         grid[12][8].setSafe(true);  grid[12][8].setColor(Color.MAGENTA);
 
+
+        players.get(2).get(0).setX(310);
+        players.get(2).get(0).setY(660);
+
+
+        players.get(3).get(0).setX(660);
+        players.get(3).get(0).setY(410);
+
+
+        players.get(1).get(0).setX(410);
+        players.get(1).get(0).setY(60);
+
+
+
+
+
+
+
+
         addKeyListener( this );    //
         setFocusable( true );     // Do NOT DELETE these three lines
         new Thread(this).start();
     }
 
+
     public void paint( Graphics window )// all other paint methods and game logic goes in here.
     {
         //background.paint(window);
         int middleBoard=grid[7][7].getCenter();
+
 
         int[] triCorner1X = {grid[6][6].x,middleBoard,grid[6][8].x+grid[6][8].w};
         int[] triCorner1Y = {grid[6][6].y,middleBoard,grid[6][8].y};
@@ -172,10 +216,14 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         int[] triCorner4X = {grid[6][8].x+grid[6][8].w,middleBoard,grid[8][8].x+grid[8][8].w};
         int[] triCorner4Y = {grid[6][8].y,middleBoard,grid[8][8].y+grid[8][8].h};
 
+
         Polygon tri1= new Polygon(triCorner1X, triCorner1Y,3);
         Polygon tri2= new Polygon(triCorner2X, triCorner2Y,3);
         Polygon tri3= new Polygon(triCorner3X, triCorner3Y,3);
         Polygon tri4= new Polygon(triCorner4X, triCorner4Y,3);
+
+
+
 
 
 
@@ -193,13 +241,19 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         window.setColor(Color.yellow);
         window.fillPolygon(tri4);
 
+
         for(ArrayList<Ball> x:players){
             for(Ball i: x){
                 i.paint(window);
             }
         }
 
+
+        dice.paint(window);
+
+
     }
+
 
     // only edit if you would like to add more key functions
     public void keyPressed(KeyEvent e)
@@ -215,6 +269,7 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         if( e.getKeyCode()  == KeyEvent.VK_RIGHT )
         {
             keys[2]=true;
+
 
         }
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
