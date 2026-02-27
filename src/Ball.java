@@ -47,9 +47,17 @@ public class Ball extends Brick
     //Look at Paddle and Brick
     int a=5;
     int b=-5;
-    public void changePosBy10()
-    {
-
+    public void up(){
+        setY(getY()-50);
+    }
+    public void down(){
+        setY(getY()+50);
+    }
+    public void left(){
+        setX(getX()-50);
+    }
+    public void right(){
+        setX(getX()-50);
     }
 
 }

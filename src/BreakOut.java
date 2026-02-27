@@ -153,6 +153,12 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         grid[6][12].setSafe(true);  grid[6][12].setColor(Color.MAGENTA);
         grid[12][8].setSafe(true);  grid[12][8].setColor(Color.MAGENTA);
 
+        players.get(3).getFirst().setX(660);
+        players.get(3).getFirst().setY(410);
+
+        players.get(0).getFirst().setX(60);
+        players.get(0).getFirst().setY(310);
+
         addKeyListener( this );    //
         setFocusable( true );     // Do NOT DELETE these three lines
         new Thread(this).start();
