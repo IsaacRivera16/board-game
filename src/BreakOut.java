@@ -17,7 +17,6 @@ class BreakOut extends JPanel implements Runnable, KeyListener
     private boolean gameOver=false;
     private boolean gameStart=false;
     private boolean alive=false;
-    private Square dice;
 
     public BreakOut() // create all instance in here
     {
@@ -25,7 +24,6 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         setSize(750,750);
         grid=new Square[15][15];
         players = new ArrayList<>();
-        dice= new Square(340,340, 70,70, Color.LIGHT_GRAY);
 
         ArrayList<Ball> red = new ArrayList<>();
         ArrayList<Ball> blue = new ArrayList<>();
@@ -155,18 +153,6 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         grid[6][12].setSafe(true);  grid[6][12].setColor(Color.MAGENTA);
         grid[12][8].setSafe(true);  grid[12][8].setColor(Color.MAGENTA);
 
-        players.get(2).get(0).setX(310);
-        players.get(2).get(0).setY(660);
-
-        players.get(3).get(0).setX(660);
-        players.get(3).get(0).setY(410);
-
-        players.get(1).get(0).setX(410);
-        players.get(1).get(0).setY(60);
-
-
-
-
         addKeyListener( this );    //
         setFocusable( true );     // Do NOT DELETE these three lines
         new Thread(this).start();
@@ -212,8 +198,6 @@ class BreakOut extends JPanel implements Runnable, KeyListener
                 i.paint(window);
             }
         }
-
-        dice.paint(window);
 
     }
 
