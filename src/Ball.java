@@ -25,7 +25,7 @@ public class Ball extends Brick
     public void paint(Graphics window )
     {
         if(color.equals("red")){
-            Color myColor = new Color(255, 0, 0);
+            Color myColor = new Color(255, 75, 75);
             window.setColor(myColor);
         }
         else if(color.equals("blue")){
@@ -36,9 +36,8 @@ public class Ball extends Brick
             Color myColor = new Color(0, 159, 11);
             window.setColor(myColor);
         }
-        //
         else{
-            Color myColor = new Color(255, 255, 0);
+            Color myColor = new Color(230, 230, 100);
             window.setColor(myColor);
         }
         window.fillOval(getX(),getY(),getW(),getH());
