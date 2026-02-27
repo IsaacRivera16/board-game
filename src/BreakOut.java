@@ -44,16 +44,16 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         green.add(new Ball(635,185,30,30,"green"));
 
         //Adding red players
-        red.add(new Ball(203,565,30,30,"red"));
-        red.add(new Ball(98,565,30,30,"red"));
-        red.add(new Ball(203,670,30,30,"red"));
-        red.add( new Ball(98,670,30,30,"red"));
+        red.add(new Ball(85,635,30,30,"red"));
+        red.add(new Ball(185,635,30,30,"red"));
+        red.add(new Ball(85,535,30,30,"red"));
+        red.add( new Ball(185,535,30,30,"red"));
 
         //Adding yellow player
-        yellow.add(new Ball(678,565,30,30,"yellow"));
-        yellow.add(new Ball(573,565,30,30,"yellow"));
-        yellow.add(new Ball(678,670,30,30,"yellow"));
-        yellow.add(new Ball(573,670,30,30,"yellow"));
+        yellow.add(new Ball(535,635,30,30,"yellow"));
+        yellow.add(new Ball(535,535,30,30,"yellow"));
+        yellow.add(new Ball(635,535,30,30,"yellow"));
+        yellow.add(new Ball(635,635,30,30,"yellow"));
 
         players.add(blue);
         players.add(green);
@@ -74,7 +74,6 @@ class BreakOut extends JPanel implements Runnable, KeyListener
             currenty+=howMuch;
             currentx=0;
         }
-
 
 
         currenty=0;
