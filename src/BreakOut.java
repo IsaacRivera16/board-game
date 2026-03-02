@@ -8,9 +8,11 @@ import java.util.prefs.Preferences;
 
 
 
-class BreakOut extends JPanel implements Runnable, KeyListener
+class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
 {
     private boolean[] keys;
+    private boolean[] whoPlays;
+    private int diceNum;
     private ArrayList<ArrayList<Ball>> players;
     private Brick background;
     private Ball r1,r2,r3,r4,g1,g2,g3,g4,y1,y2,y3,y4,b1,b2,b3,b4;
@@ -25,6 +27,7 @@ class BreakOut extends JPanel implements Runnable, KeyListener
     public BreakOut() // create all instance in here
     {
 // breakout
+
         setSize(750,750);
         grid=new Square[15][15];
         players = new ArrayList<>();
@@ -177,15 +180,19 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         grid[12][8].setSafe(true);  grid[12][8].setColor(Color.MAGENTA);
 
 
-        players.get(2).get(0).setX(310);
+        players.get(0).get(0).setX(60); //blue
+        players.get(0).get(0).setY(310);
+
+
+        players.get(2).get(0).setX(310); //red
         players.get(2).get(0).setY(660);
 
 
-        players.get(3).get(0).setX(660);
+        players.get(3).get(0).setX(660); //yellow
         players.get(3).get(0).setY(410);
 
 
-        players.get(1).get(0).setX(410);
+        players.get(1).get(0).setX(410); //green
         players.get(1).get(0).setY(60);
 
 
@@ -196,8 +203,13 @@ class BreakOut extends JPanel implements Runnable, KeyListener
 
 
         addKeyListener( this );    //
+        addMouseListener(this);
         setFocusable( true );     // Do NOT DELETE these three lines
         new Thread(this).start();
+    }
+
+    public void roll(){
+        diceNum=(int)(Math.random()*6)+1;
     }
 
 
@@ -249,7 +261,16 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         }
 
 
+        if(keys[0]){
+            roll();
+            keys[0]=false;
+        }
+
         dice.paint(window);
+
+        window.setFont(new Font("Arial", Font.BOLD, 50));
+        window.setColor(Color.black);
+        window.drawString("" + diceNum, dice.getCenter()-15, dice.getCenter()+20);
 
 
     }
@@ -285,21 +306,7 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         keyPressed( e );
     }
     public void keyReleased(KeyEvent e)    {
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-            keys[0] = false;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            keys[1] = false;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            keys[2] = false;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            keys[3] = false;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            keys[4] = false;
-        }
+
     }
     public void run() {
         try {
@@ -310,5 +317,31 @@ class BreakOut extends JPanel implements Runnable, KeyListener
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        keys[0]=true;
+        System.out.println("Clicked");
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }

@@ -6,7 +6,7 @@ import javax.swing.*;
 public class Ball extends Brick
 {
     private String color;
-    boolean safe;
+    boolean safe, done, locked;
     public Ball( int ex, int wy, int wd, int ht, String co)
     {
         super(ex,wy,wd,ht);
