@@ -11,9 +11,12 @@ import java.util.prefs.Preferences;
 class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
 {
     private boolean[] keys;
+    int te=0;
     private boolean[] whoPlays;
     private int diceNum;
     private ArrayList<ArrayList<Ball>> players;
+    ArrayList<Ball> red,blue,yellow,green;
+
     private Brick background;
     private Ball r1,r2,r3,r4,g1,g2,g3,g4,y1,y2,y3,y4,b1,b2,b3,b4;
     private Square[][] grid;
@@ -33,16 +36,194 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
         players = new ArrayList<>();
         dice= new Square(340,340, 70,70, Color.LIGHT_GRAY);
 
+        setGrid();
+        //Adding blue players
+
+        whoPlays = new boolean[4];
+        keys = new boolean[5];
+
+
+
+        //Safe spots
+        grid[2][6].setSafe(true); grid[2][6].setColor(Color.MAGENTA);
+        grid[8][2].setSafe(true); grid[8][2].setColor(Color.MAGENTA);
+        grid[6][12].setSafe(true);  grid[6][12].setColor(Color.MAGENTA);
+        grid[12][8].setSafe(true);  grid[12][8].setColor(Color.MAGENTA);
+
+
+        players.get(0).get(0).setX(60); //blue
+        players.get(0).get(0).setY(310);
+
+
+        players.get(2).get(0).setX(310); //red
+        players.get(2).get(0).setY(660);
+
+
+        players.get(3).get(0).setX(660); //yellow
+        players.get(3).get(0).setY(410);
+
+
+        players.get(1).get(0).setX(410); //green
+        players.get(1).get(0).setY(60);
+
+
+
+
+
+
+
+
+
+
+
+        addKeyListener( this );    //
+        addMouseListener(this);
+        setFocusable( true );     // Do NOT DELETE these three lines
+        new Thread(this).start();
+    }
+
+    public
+
+    public void roll(){
+        diceNum=(int)(Math.random()*6)+1;
+    }
+
+
+    public void paint( Graphics window )// all other paint methods and game logic goes in here.
+    {
+
+        if(te==30){
+            players.get(0).get(0).right();
+        }
+        te+=1;
+        System.out.println("fdfd");
+
+        //background.paint(window);
+        int middleBoard=grid[7][7].getCenter();
+
+        int[] triCorner1X = {grid[6][6].x,middleBoard,grid[6][8].x+grid[6][8].w};
+        int[] triCorner1Y = {grid[6][6].y,middleBoard,grid[6][8].y};
+        int[] triCorner2X = {grid[6][6].x,middleBoard,grid[8][6].x};
+        int[] triCorner2Y = {grid[6][6].y,middleBoard,grid[8][6].y+grid[8][6].h};
+        int[] triCorner3X = {grid[8][6].x,middleBoard,grid[8][8].x+grid[8][8].w};
+        int[] triCorner3Y = {grid[8][6].y+grid[8][6].h,middleBoard,grid[8][8].y+grid[8][8].h};
+        int[] triCorner4X = {grid[6][8].x+grid[6][8].w,middleBoard,grid[8][8].x+grid[8][8].w};
+        int[] triCorner4Y = {grid[6][8].y,middleBoard,grid[8][8].y+grid[8][8].h};
+
+        Polygon tri1= new Polygon(triCorner1X, triCorner1Y,3);
+        Polygon tri2= new Polygon(triCorner2X, triCorner2Y,3);
+        Polygon tri3= new Polygon(triCorner3X, triCorner3Y,3);
+        Polygon tri4= new Polygon(triCorner4X, triCorner4Y,3);
+
+        for(Square[] x:grid){
+            for(Square i:x){
+                i.paint(window);
+            }
+        }
+        window.setColor(Color.green);
+        window.fillPolygon(tri1);
+        window.setColor(Color.blue);
+        window.fillPolygon(tri2);
+        window.setColor(Color.red);
+        window.fillPolygon(tri3);
+        window.setColor(Color.yellow);
+        window.fillPolygon(tri4);
+
+        for(ArrayList<Ball> x:players){
+            for(Ball i: x){
+                i.paint(window);
+            }
+        }
+
+        if(keys[0]){
+            roll();
+            keys[0]=false;
+        }
+        dice.paint(window);
+        window.setFont(new Font("Arial", Font.BOLD, 50));
+        window.setColor(Color.black);
+        window.drawString("" + diceNum, dice.getCenter()-15, dice.getCenter()+20);
+
+
+    }
+
+
+    // only edit if you would like to add more key functions
+    public void keyPressed(KeyEvent e)
+    {
+        if( e.getKeyCode()  == KeyEvent.VK_UP )
+        {
+            keys[0]=true;
+        }
+        if( e.getKeyCode()  == KeyEvent.VK_LEFT )
+        {
+            keys[1]=true;
+        }
+        if( e.getKeyCode()  == KeyEvent.VK_RIGHT )
+        {
+            keys[2]=true;
+
+
+        }
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            keys[3] = true;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            keys[4] = true;
+        }
+    }
+    // do not edit anything from this point on!!!
+    public void keyTyped(KeyEvent e)
+    {
+        keyPressed( e );
+    }
+    public void keyReleased(KeyEvent e)    {
+
+    }
+    public void run() {
+        try {
+            while (true) {
+                Thread.sleep(10);
+                repaint();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        keys[0]=true;
+        System.out.println("Clicked");
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    public void setGrid(){
 
         ArrayList<Ball> red = new ArrayList<>();
         ArrayList<Ball> blue = new ArrayList<>();
         ArrayList<Ball> yellow = new ArrayList<>();
         ArrayList<Ball> green = new ArrayList<>();
 
-
-
-
-        //Adding blue players
         blue.add(new Ball(85,85,30,30,"blue"));
         blue.add(new Ball(185,185,30,30,"blue"));
         blue.add(new Ball(185,85,30,30,"blue"));
@@ -74,12 +255,6 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
         players.add(green);
         players.add(red);
         players.add(yellow);
-
-
-
-
-        keys = new boolean[5];
-
 
         int currentx=0;
         int currenty=0;
@@ -173,175 +348,5 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
 
 
         }
-        //Safe spots
-        grid[2][6].setSafe(true); grid[2][6].setColor(Color.MAGENTA);
-        grid[8][2].setSafe(true); grid[8][2].setColor(Color.MAGENTA);
-        grid[6][12].setSafe(true);  grid[6][12].setColor(Color.MAGENTA);
-        grid[12][8].setSafe(true);  grid[12][8].setColor(Color.MAGENTA);
-
-
-        players.get(0).get(0).setX(60); //blue
-        players.get(0).get(0).setY(310);
-
-
-        players.get(2).get(0).setX(310); //red
-        players.get(2).get(0).setY(660);
-
-
-        players.get(3).get(0).setX(660); //yellow
-        players.get(3).get(0).setY(410);
-
-
-        players.get(1).get(0).setX(410); //green
-        players.get(1).get(0).setY(60);
-
-
-
-
-
-
-
-
-        addKeyListener( this );    //
-        addMouseListener(this);
-        setFocusable( true );     // Do NOT DELETE these three lines
-        new Thread(this).start();
-    }
-
-    public void roll(){
-        diceNum=(int)(Math.random()*6)+1;
-    }
-
-
-    public void paint( Graphics window )// all other paint methods and game logic goes in here.
-    {
-        //background.paint(window);
-        int middleBoard=grid[7][7].getCenter();
-
-
-        int[] triCorner1X = {grid[6][6].x,middleBoard,grid[6][8].x+grid[6][8].w};
-        int[] triCorner1Y = {grid[6][6].y,middleBoard,grid[6][8].y};
-        int[] triCorner2X = {grid[6][6].x,middleBoard,grid[8][6].x};
-        int[] triCorner2Y = {grid[6][6].y,middleBoard,grid[8][6].y+grid[8][6].h};
-        int[] triCorner3X = {grid[8][6].x,middleBoard,grid[8][8].x+grid[8][8].w};
-        int[] triCorner3Y = {grid[8][6].y+grid[8][6].h,middleBoard,grid[8][8].y+grid[8][8].h};
-        int[] triCorner4X = {grid[6][8].x+grid[6][8].w,middleBoard,grid[8][8].x+grid[8][8].w};
-        int[] triCorner4Y = {grid[6][8].y,middleBoard,grid[8][8].y+grid[8][8].h};
-
-
-        Polygon tri1= new Polygon(triCorner1X, triCorner1Y,3);
-        Polygon tri2= new Polygon(triCorner2X, triCorner2Y,3);
-        Polygon tri3= new Polygon(triCorner3X, triCorner3Y,3);
-        Polygon tri4= new Polygon(triCorner4X, triCorner4Y,3);
-
-
-
-
-
-
-        for(Square[] x:grid){
-            for(Square i:x){
-                i.paint(window);
-            }
-        }
-        window.setColor(Color.green);
-        window.fillPolygon(tri1);
-        window.setColor(Color.blue);
-        window.fillPolygon(tri2);
-        window.setColor(Color.red);
-        window.fillPolygon(tri3);
-        window.setColor(Color.yellow);
-        window.fillPolygon(tri4);
-
-
-        for(ArrayList<Ball> x:players){
-            for(Ball i: x){
-                i.paint(window);
-            }
-        }
-
-
-        if(keys[0]){
-            roll();
-            keys[0]=false;
-        }
-
-        dice.paint(window);
-
-        window.setFont(new Font("Arial", Font.BOLD, 50));
-        window.setColor(Color.black);
-        window.drawString("" + diceNum, dice.getCenter()-15, dice.getCenter()+20);
-
-
-    }
-
-
-    // only edit if you would like to add more key functions
-    public void keyPressed(KeyEvent e)
-    {
-        if( e.getKeyCode()  == KeyEvent.VK_UP )
-        {
-            keys[0]=true;
-        }
-        if( e.getKeyCode()  == KeyEvent.VK_LEFT )
-        {
-            keys[1]=true;
-        }
-        if( e.getKeyCode()  == KeyEvent.VK_RIGHT )
-        {
-            keys[2]=true;
-
-
-        }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            keys[3] = true;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            keys[4] = true;
-        }
-    }
-    // do not edit anything from this point on!!!
-    public void keyTyped(KeyEvent e)
-    {
-        keyPressed( e );
-    }
-    public void keyReleased(KeyEvent e)    {
-
-    }
-    public void run() {
-        try {
-            while (true) {
-                Thread.sleep(10);
-                repaint();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        keys[0]=true;
-        System.out.println("Clicked");
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
     }
 }
