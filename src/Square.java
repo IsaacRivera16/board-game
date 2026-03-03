@@ -5,6 +5,14 @@ public class Square extends Canvas {
     private int[] center;
     private Color color;
     boolean safe;
+    boolean upTurn;
+    boolean downTurn;
+    boolean rightTurn;
+    boolean leftTurn;
+    boolean blueTurn;
+    boolean redTurn;
+    boolean yellowTurn;
+    boolean greenTurn;
 
     public Square(int xx, int yy, int ww, int hh, Color co){
         x=xx;
@@ -13,6 +21,14 @@ public class Square extends Canvas {
         h=hh;
         color=co;
         safe=false;
+        upTurn=false;
+        downTurn=false;
+        rightTurn=false;
+        leftTurn=false;
+        blueTurn=false;
+        redTurn=false;
+        yellowTurn=false;
+        greenTurn=false;
     }
 
     public int getCenter() {
@@ -20,11 +36,32 @@ public class Square extends Canvas {
         return x+w/2;
     }
 
-    public void setSafe(boolean s) {
-        safe = s;
+    public void setSafe() {
+        safe = true;
     }
-    public void upTurn(boolean t){
-
+    public void setUpTurn(){
+        upTurn= true;
+    }
+    public void setDownTurn(){
+        downTurn= true;
+    }
+    public void setRightTurn(){
+        rightTurn= true;
+    }
+    public void setLeftTurn(){
+        leftTurn= true;
+    }
+    public void setBlueTurn(){
+        blueTurn =true;
+    }
+    public void setRedTurn(){
+        redTurn =true;
+    }
+    public void setGreenTurn(){
+        greenTurn =true;
+    }
+    public void setYellowTurn(){
+        yellowTurn =true;
     }
 
     public Color getColor() {
