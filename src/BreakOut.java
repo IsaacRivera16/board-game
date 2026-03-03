@@ -40,6 +40,7 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
 
 
         whoPlays = new boolean[4];
+        whoPlays[0]=true;
         keys = new boolean[5];
 
         addKeyListener( this );    //
@@ -79,10 +80,7 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
     public void paint( Graphics window )// all other paint methods and game logic goes in here.
     {
 
-        if(te==30){
-            players.get(0).get(0).right();
-        }
-        te+=1;
+
 
 
         //background.paint(window);

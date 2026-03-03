@@ -57,7 +57,7 @@ public class Ball extends Brick
         setX(getX()-50);
     }
     public void right(){
-        setX(getX()-50);
+        setX(getX()+50);
     }
 
 }
