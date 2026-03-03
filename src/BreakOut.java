@@ -82,8 +82,6 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
         new Thread(this).start();
     }
 
-    public
-
     public void roll(){
         diceNum=(int)(Math.random()*6)+1;
     }
@@ -199,7 +197,6 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
     @Override
     public void mousePressed(MouseEvent e) {
         keys[0]=true;
-        System.out.println("Clicked");
     }
 
     @Override

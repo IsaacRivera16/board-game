@@ -4,7 +4,7 @@ public class Square extends Canvas {
     int x, y, w, h;
     private int[] center;
     private Color color;
-    private boolean safe;
+    boolean safe;
 
     public Square(int xx, int yy, int ww, int hh, Color co){
         x=xx;
@@ -20,8 +20,11 @@ public class Square extends Canvas {
         return x+w/2;
     }
 
-    public void setSafe(boolean safe) {
-        this.safe = safe;
+    public void setSafe(boolean s) {
+        safe = s;
+    }
+    public void upTurn(boolean t){
+
     }
 
     public Color getColor() {
