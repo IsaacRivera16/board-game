@@ -37,44 +37,10 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
         dice= new Square(340,340, 70,70, Color.LIGHT_GRAY);
 
         setGrid();
-        //Adding blue players
+
 
         whoPlays = new boolean[4];
         keys = new boolean[5];
-
-
-
-        //Safe spots
-        grid[2][6].setSafe(true); grid[2][6].setColor(Color.MAGENTA);
-        grid[8][2].setSafe(true); grid[8][2].setColor(Color.MAGENTA);
-        grid[6][12].setSafe(true);  grid[6][12].setColor(Color.MAGENTA);
-        grid[12][8].setSafe(true);  grid[12][8].setColor(Color.MAGENTA);
-
-
-        players.get(0).get(0).setX(60); //blue
-        players.get(0).get(0).setY(310);
-
-
-        players.get(2).get(0).setX(310); //red
-        players.get(2).get(0).setY(660);
-
-
-        players.get(3).get(0).setX(660); //yellow
-        players.get(3).get(0).setY(410);
-
-
-        players.get(1).get(0).setX(410); //green
-        players.get(1).get(0).setY(60);
-
-
-
-
-
-
-
-
-
-
 
         addKeyListener( this );    //
         addMouseListener(this);
@@ -82,8 +48,31 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
         new Thread(this).start();
     }
 
+
     public void roll(){
         diceNum=(int)(Math.random()*6)+1;
+
+    }
+
+    public void game(){
+        if(diceNum==6){
+            if(whoPlays[0]){
+                players.get(0).get(0).setX(60); //blue
+                players.get(0).get(0).setY(310);
+            }
+            if(whoPlays[1]){
+                players.get(1).get(0).setX(410); //green
+                players.get(1).get(0).setY(60);
+            }
+            if(whoPlays[2]){
+                players.get(2).get(0).setX(310); //red
+                players.get(2).get(0).setY(660);
+            }
+            if(whoPlays[3]){
+                players.get(3).get(0).setX(660); //yellow
+                players.get(3).get(0).setY(410);
+            }
+        }
     }
 
 
@@ -94,7 +83,7 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
             players.get(0).get(0).right();
         }
         te+=1;
-        System.out.println("fdfd");
+
 
         //background.paint(window);
         int middleBoard=grid[7][7].getCenter();
@@ -196,7 +185,14 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
 
     @Override
     public void mousePressed(MouseEvent e) {
-        keys[0]=true;
+        int mx = e.getX();
+        int my = e.getY();
+        if (mx >= dice.x && mx <= dice.x + dice.w &&
+                my >= dice.y && my <= dice.y + dice.h) {
+            roll();
+
+        }
+
     }
 
     @Override
@@ -298,40 +294,40 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
                 if(r>0 && r<=6){
                     if(c==7){
                         grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.green);
-                        grid[r][c].setSafe(true);
+                        grid[r][c].setSafe();
                     }
                     if(r==1 && c==8){
                         grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.green);
-                        grid[r][c].setSafe(true);
+                        grid[r][c].setSafe();
                     }
                 }
                 if(r>7&&r<grid.length-1){
                     if(c==7){
                         grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.red);
-                        grid[r][c].setSafe(true);
+                        grid[r][c].setSafe();
                     }
                     if (r==grid.length-2 && c==6){
                         grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.red);
-                        grid[r][c].setSafe(true);}
+                        grid[r][c].setSafe();}
                 }
                 if(c>0 && c<=6){
                     if(r==7){
                         grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.blue);
-                        grid[r][c].setSafe(true);
+                        grid[r][c].setSafe();
                     }
                     if(c==1 && r==6){
                         grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.blue);
-                        grid[r][c].setSafe(true);
+                        grid[r][c].setSafe();
                     }
                 }
                 if(c>7&&c<grid.length-1){
                     if(r==7){
                         grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.yellow);
-                        grid[r][c].setSafe(true);
+                        grid[r][c].setSafe();
                     }
                     if(c==grid.length-2 && r==8){
                         grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.yellow);
-                        grid[r][c].setSafe(true);
+                        grid[r][c].setSafe();
                     }
                 }
                 currentx+=howMuch;
@@ -345,5 +341,10 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
 
 
         }
+        //Safe spots
+        grid[2][6].setSafe(); grid[2][6].setColor(Color.MAGENTA);
+        grid[8][2].setSafe(); grid[8][2].setColor(Color.MAGENTA);
+        grid[6][12].setSafe();  grid[6][12].setColor(Color.MAGENTA);
+        grid[12][8].setSafe();  grid[12][8].setColor(Color.MAGENTA);
     }
 }
