@@ -21,7 +21,7 @@ public class Square extends Canvas {
     }
 
     public void setSafe(boolean safe) {
-        safe = true;
+        this.safe = safe;
     }
 
     public Color getColor() {
