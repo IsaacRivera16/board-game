@@ -1,6 +1,6 @@
 import java.awt.*;
 
-
+//MAKE FINISH BOOLEAN AND METHODS
 
 
 public class Square extends Canvas {

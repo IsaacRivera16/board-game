@@ -1,6 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
-
+//BBoolean finish
+//
 
 public class Ball extends Brick {
     private String color;
