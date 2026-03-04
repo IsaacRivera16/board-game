@@ -49,8 +49,6 @@ public class Square extends Canvas {
     }
 
 
-
-
     public void setSafe() {
         safe = true;
     }
