@@ -39,7 +39,6 @@ public class Ball extends Brick {
     public void moveOneSquare(Square[][] grid) {
         if (!onBoard) return;
 
-
         if (grid[row][col].upTurn) direction = "up";
         else if (grid[row][col].downTurn) direction = "down";
         else if (grid[row][col].leftTurn) direction = "left";
