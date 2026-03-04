@@ -8,14 +8,16 @@ public class Ball extends Brick {
     private int row, col;
     private String direction;
     boolean onBoard;
+    int ballNum;
 
 
-    public Ball(int ex, int wy, int wd, int ht, String co) {
+    public Ball(int ex, int wy, int wd, int ht, String co,int b) {
         super(ex, wy, wd, ht);
         color = co;
         safe = false;
         row = -1;
         col = -1;
+        ballNum=b;
         if(co.equals("blue")){
             direction = "right";
         }
@@ -30,7 +32,6 @@ public class Ball extends Brick {
         }
         onBoard = false;
     }
-
 
     public void setGridPosition(Square[][] grid, int r, int c) {
         row = r;

@@ -174,7 +174,7 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
                 if (diceNum == 6) {
                     if (currentPlayer == 0) ball.setGridPosition(grid, 6, 1);   // blue
                     if (currentPlayer == 1) ball.setGridPosition(grid, 2, 8);   // green
-                    if (currentPlayer == 2) ball.setGridPosition(grid, 6, 13);  // red
+                    if (currentPlayer == 2) ball.setGridPosition(grid, 13, 6);  // red
                     if (currentPlayer == 3) ball.setGridPosition(grid, 8, 13);  // yellow
                 } else {
                     whoPlays[currentPlayer]=false;
@@ -214,28 +214,28 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
         ArrayList<Ball> yellow = new ArrayList<>();
         ArrayList<Ball> green = new ArrayList<>();
 
-        blue.add(new Ball(85,85,30,30,"blue"));
-        blue.add(new Ball(185,185,30,30,"blue"));
-        blue.add(new Ball(185,85,30,30,"blue"));
-        blue.add(new Ball(85,185,30,30,"blue"));
+        blue.add(new Ball(85,85,30,30,"blue",0));
+        blue.add(new Ball(185,185,30,30,"blue",1));
+        blue.add(new Ball(185,85,30,30,"blue",2));
+        blue.add(new Ball(85,185,30,30,"blue",3));
 
         //Adding green players
-        green.add(new Ball(535,85,30,30,"green"));
-        green.add(new Ball(535,185,30,30,"green"));
-        green.add(new Ball(635,85,30,30,"green"));
-        green.add(new Ball(635,185,30,30,"green"));
+        green.add(new Ball(535,85,30,30,"green",0));
+        green.add(new Ball(535,185,30,30,"green",1));
+        green.add(new Ball(635,85,30,30,"green",2));
+        green.add(new Ball(635,185,30,30,"green",3));
 
         //Adding red players
-        red.add(new Ball(85,635,30,30,"red"));
-        red.add(new Ball(185,635,30,30,"red"));
-        red.add(new Ball(85,535,30,30,"red"));
-        red.add( new Ball(185,535,30,30,"red"));
+        red.add(new Ball(85,635,30,30,"red",0));
+        red.add(new Ball(185,635,30,30,"red",1));
+        red.add(new Ball(85,535,30,30,"red",2));
+        red.add( new Ball(185,535,30,30,"red",3));
 
         //Adding yellow player
-        yellow.add(new Ball(535,635,30,30,"yellow"));
-        yellow.add(new Ball(535,535,30,30,"yellow"));
-        yellow.add(new Ball(635,535,30,30,"yellow"));
-        yellow.add(new Ball(635,635,30,30,"yellow"));
+        yellow.add(new Ball(535,635,30,30,"yellow",0));
+        yellow.add(new Ball(535,535,30,30,"yellow",1));
+        yellow.add(new Ball(635,535,30,30,"yellow",2));
+        yellow.add(new Ball(635,635,30,30,"yellow",3));
 
         players.add(blue);
         players.add(green);
