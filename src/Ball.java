@@ -1,67 +1,81 @@
 import java.awt.*;
-import java.util.*;
-import java.awt.event.*;
 import javax.swing.*;
 
-public class Ball extends Brick
-{
+
+public class Ball extends Brick {
     private String color;
-    boolean safe, done, locked;
-    public Ball( int ex, int wy, int wd, int ht, String co)
-    {
-        super(ex,wy,wd,ht);
-        color=co;
+    boolean safe;
+    private int row, col;
+    private String direction;
+    boolean onBoard;
+
+
+    public Ball(int ex, int wy, int wd, int ht, String co) {
+        super(ex, wy, wd, ht);
+        color = co;
+        safe = false;
+        row = -1;
+        col = -1;
+        direction = "right";
+        onBoard = false;
     }
 
-    public void playAgain(){
-        setY(475);
-        setX(400);
+
+    public void setGridPosition(Square[][] grid, int r, int c) {
+        row = r;
+        col = c;
+        onBoard = true;
+        setX(grid[row][col].x + grid[row][col].w / 2 - getW() / 2);
+        setY(grid[row][col].y + grid[row][col].h / 2 - getH() / 2);
     }
 
-    public void setSafe(boolean s) {
-        safe = s;
+
+    public int getRow() { return row; }
+    public int getCol() { return col; }
+    public String getDirection() { return direction; }
+    public void setDirection(String dir) { direction = dir; }
+
+
+    public void moveOneSquare(Square[][] grid) {
+        if (!onBoard) return;
+
+
+        if (grid[row][col].upTurn) direction = "up";
+        else if (grid[row][col].downTurn) direction = "down";
+        else if (grid[row][col].leftTurn) direction = "left";
+        else if (grid[row][col].rightTurn) direction = "right";
+        else if (grid[row][col].blueTurn && color.equals("blue")) direction = "right";
+        else if (grid[row][col].greenTurn && color.equals("green")) direction = "down";
+        else if (grid[row][col].redTurn && color.equals("red")) direction = "up";
+        else if (grid[row][col].yellowTurn && color.equals("yellow")) direction = "left";
+
+
+        if (direction.equals("up")) row--;
+        else if (direction.equals("down")) row++;
+        else if (direction.equals("left")) col--;
+        else if (direction.equals("right")) col++;
+
+
+        setX(grid[row][col].x + grid[row][col].w / 2 - getW() / 2);
+        setY(grid[row][col].y + grid[row][col].h / 2 - getH() / 2);
     }
 
-    public void paint(Graphics window )
-    {
-        if(color.equals("red")){
-            Color myColor = new Color(255, 75, 75);
-            window.setColor(myColor);
-        }
-        else if(color.equals("blue")){
-            Color myColor = new Color(48, 111, 255);
-            window.setColor(myColor);
-        }
-        else if(color.equals("green")){
-            Color myColor = new Color(0, 159, 11);
-            window.setColor(myColor);
-        }
-        else{
-            Color myColor = new Color(230, 230, 100);
-            window.setColor(myColor);
-        }
-        window.fillOval(getX(),getY(),getW(),getH());
+
+    // Draw the ball
+    public void paint(Graphics window) {
+        if (color.equals("red")) window.setColor(new Color(255, 75, 75));
+        else if (color.equals("blue")) window.setColor(new Color(48, 111, 255));
+        else if (color.equals("green")) window.setColor(new Color(0, 159, 11));
+        else window.setColor(new Color(230, 230, 100));
+
+
+        window.fillOval(getX(), getY(), getW(), getH());
         window.setColor(Color.BLACK);
-        window.drawOval(getX(),getY(),getW(),getH());
-    }
-    //Look at Paddle and Brick
-    int a=5;
-    int b=-5;
-    public void up(){
-        setY(getY()-50);
-    }
-    public void down(){
-        setY(getY()+50);
-    }
-    public void left(){
-        setX(getX()-50);
-    }
-    public void right(){
-        setX(getX()+50);
+        window.drawOval(getX(), getY(), getW(), getH());
     }
 
+
+
+
+    public void setSafe(boolean s) { safe = s; }
 }
-//use those classes as examples
-//to create the Ball class
-
-

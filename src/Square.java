@@ -1,5 +1,8 @@
 import java.awt.*;
 
+
+
+
 public class Square extends Canvas {
     int x, y, w, h;
     private int[] center;
@@ -13,6 +16,9 @@ public class Square extends Canvas {
     boolean redTurn;
     boolean yellowTurn;
     boolean greenTurn;
+
+
+
 
     public Square(int xx, int yy, int ww, int hh, Color co){
         x=xx;
@@ -31,10 +37,19 @@ public class Square extends Canvas {
         greenTurn=false;
     }
 
+
+
+
     public int getCenter() {
+
+
+
 
         return x+w/2;
     }
+
+
+
 
     public void setSafe() {
         safe = true;
@@ -64,13 +79,22 @@ public class Square extends Canvas {
         yellowTurn =true;
     }
 
+
+
+
     public Color getColor() {
         return color;
+
+
+
 
     }
     public void setColor(Color c){
         color=c;
     }
+
+
+
 
     public void paint(Graphics windo){
         Graphics2D window = (Graphics2D) windo;
@@ -80,8 +104,20 @@ public class Square extends Canvas {
 
 
 
+
+
+
+
+
+
+
+
+
         Color my = new Color(Math.max(re-50,100),Math.max(gr-50,100),Math.max(bl-50,100));
         my=new Color(100,100,100);
+
+
+
 
         window.setColor(my);
         window.setStroke(new BasicStroke(5));
@@ -90,3 +126,7 @@ public class Square extends Canvas {
         window.fillRect(x,y,w,h);
     }
 }
+
+
+
+

@@ -8,6 +8,18 @@ import java.util.prefs.Preferences;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
 {
     private boolean[] keys;
@@ -16,6 +28,9 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
     private int diceNum;
     private ArrayList<ArrayList<Ball>> players;
     ArrayList<Ball> red,blue,yellow,green;
+
+
+
 
     private Brick background;
     private Ball r1,r2,r3,r4,g1,g2,g3,g4,y1,y2,y3,y4,b1,b2,b3,b4;
@@ -27,21 +42,42 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
     private Square dice;
 
 
+
+
+
+
+
+
     public BreakOut() // create all instance in here
     {
 // breakout
+
+
+
 
         setSize(750,750);
         grid=new Square[15][15];
         players = new ArrayList<>();
         dice= new Square(340,340, 70,70, Color.LIGHT_GRAY);
 
+
+
+
         setGrid();
+
+
+
+
+
+
 
 
         whoPlays = new boolean[4];
         whoPlays[0]=true;
         keys = new boolean[5];
+
+
+
 
         addKeyListener( this );    //
         addMouseListener(this);
@@ -50,10 +86,22 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
     }
 
 
+
+
+
+
+
+
     public void roll(){
         diceNum=(int)(Math.random()*6)+1;
 
+
+
+
     }
+
+
+
 
     public void game(){
         if(diceNum==6){
@@ -77,14 +125,35 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
     }
 
 
+
+
+
+
+
+
     public void paint( Graphics window )// all other paint methods and game logic goes in here.
     {
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
         //background.paint(window);
         int middleBoard=grid[7][7].getCenter();
+
+
+
 
         int[] triCorner1X = {grid[6][6].x,middleBoard,grid[6][8].x+grid[6][8].w};
         int[] triCorner1Y = {grid[6][6].y,middleBoard,grid[6][8].y};
@@ -95,10 +164,16 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
         int[] triCorner4X = {grid[6][8].x+grid[6][8].w,middleBoard,grid[8][8].x+grid[8][8].w};
         int[] triCorner4Y = {grid[6][8].y,middleBoard,grid[8][8].y+grid[8][8].h};
 
+
+
+
         Polygon tri1= new Polygon(triCorner1X, triCorner1Y,3);
         Polygon tri2= new Polygon(triCorner2X, triCorner2Y,3);
         Polygon tri3= new Polygon(triCorner3X, triCorner3Y,3);
         Polygon tri4= new Polygon(triCorner4X, triCorner4Y,3);
+
+
+
 
         for(Square[] x:grid){
             for(Square i:x){
@@ -114,11 +189,17 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
         window.setColor(Color.yellow);
         window.fillPolygon(tri4);
 
+
+
+
         for(ArrayList<Ball> x:players){
             for(Ball i: x){
                 i.paint(window);
             }
         }
+
+
+
 
         if(keys[0]){
             roll();
@@ -130,7 +211,19 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
         window.drawString("" + diceNum, dice.getCenter()-15, dice.getCenter()+20);
 
 
+
+
+
+
+
+
     }
+
+
+
+
+
+
 
 
     // only edit if you would like to add more key functions
@@ -149,6 +242,12 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
             keys[2]=true;
 
 
+
+
+
+
+
+
         }
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             keys[3] = true;
@@ -164,6 +263,9 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
     }
     public void keyReleased(KeyEvent e)    {
 
+
+
+
     }
     public void run() {
         try {
@@ -176,49 +278,113 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
         }
     }
 
+
+
+
     @Override
     public void mouseClicked(MouseEvent e) {
 
+
+
+
     }
+
+
+
 
     @Override
     public void mousePressed(MouseEvent e) {
         int mx = e.getX();
         int my = e.getY();
-        if (mx >= dice.x && mx <= dice.x + dice.w &&
-                my >= dice.y && my <= dice.y + dice.h) {
+        if (mx >= dice.x && mx <= dice.x + dice.w && my >= dice.y && my <= dice.y + dice.h) {
             roll();
 
-        }
 
+            int currentPlayer = -1;
+            for (int i = 0; i < whoPlays.length; i++) {
+                if (whoPlays[i]) currentPlayer = i;
+            }
+            if (currentPlayer == -1) return;
+
+
+            Ball ball = players.get(currentPlayer).get(0);
+            if (!ball.onBoard) {
+                if (diceNum == 6) {
+                    if (currentPlayer == 0) ball.setGridPosition(grid, 6, 1);   // blue
+                    if (currentPlayer == 1) ball.setGridPosition(grid, 2, 8);   // green
+                    if (currentPlayer == 2) ball.setGridPosition(grid, 6, 13);  // red
+                    if (currentPlayer == 3) ball.setGridPosition(grid, 8, 13);  // yellow
+                } else {
+                    return;
+                }
+            } else {
+                for (int i = 0; i < diceNum; i++) {
+                    ball.moveOneSquare(grid);
+                }
+            }
+            repaint();
+        }
     }
+
+
+
 
     @Override
     public void mouseReleased(MouseEvent e) {
 
+
+
+
     }
+
+
+
 
     @Override
     public void mouseEntered(MouseEvent e) {
 
+
+
+
     }
+
+
+
 
     @Override
     public void mouseExited(MouseEvent e) {
 
+
+
+
     }
 
+
+
+
     public void setGrid(){
+
+
+
 
         ArrayList<Ball> red = new ArrayList<>();
         ArrayList<Ball> blue = new ArrayList<>();
         ArrayList<Ball> yellow = new ArrayList<>();
         ArrayList<Ball> green = new ArrayList<>();
 
+
+
+
         blue.add(new Ball(85,85,30,30,"blue"));
         blue.add(new Ball(185,185,30,30,"blue"));
         blue.add(new Ball(185,85,30,30,"blue"));
         blue.add(new Ball(85,185,30,30,"blue"));
+
+
+
+
+
+
 
 
         //Adding green players
@@ -228,11 +394,23 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
         green.add(new Ball(635,185,30,30,"green"));
 
 
+
+
+
+
+
+
         //Adding red players
         red.add(new Ball(85,635,30,30,"red"));
         red.add(new Ball(185,635,30,30,"red"));
         red.add(new Ball(85,535,30,30,"red"));
         red.add( new Ball(185,535,30,30,"red"));
+
+
+
+
+
+
 
 
         //Adding yellow player
@@ -242,10 +420,19 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
         yellow.add(new Ball(635,635,30,30,"yellow"));
 
 
+
+
+
+
+
+
         players.add(blue);
         players.add(green);
         players.add(red);
         players.add(yellow);
+
+
+
 
         int currentx=0;
         int currenty=0;
@@ -258,6 +445,18 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
             currenty+=howMuch;
             currentx=0;
         }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -276,6 +475,12 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
                 }
 
 
+
+
+
+
+
+
                 if(r>8){
                     if(c<6){
                         grid[r][c]=new Square(currentx,currenty,howMuch,howMuch,Color.red);
@@ -285,7 +490,19 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
                     }
 
 
+
+
+
+
+
+
                 }
+
+
+
+
+
+
 
 
                 //Entrance onto board and pathways
@@ -333,10 +550,21 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
             }
             currenty+=howMuch;
             currentx=0;
-
 
         }
         //Safe spots
@@ -344,5 +572,21 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
         grid[8][2].setSafe(); grid[8][2].setColor(Color.MAGENTA);
         grid[6][12].setSafe();  grid[6][12].setColor(Color.MAGENTA);
         grid[12][8].setSafe();  grid[12][8].setColor(Color.MAGENTA);
+        grid[0][6].setRightTurn();
+        grid[0][7].setGreenTurn();
+        grid[0][8].setDownTurn();
+        grid[6][14].setDownTurn();
+        grid[7][14].setYellowTurn();
+        grid[8][14].setLeftTurn();
+        grid[14][8].setLeftTurn();
+        grid[14][7].setRedTurn();
+        grid[14][6].setUpTurn();
+        grid[8][0].setUpTurn();
+        grid[7][0].setBlueTurn();
+        grid[6][0].setRightTurn();
+        grid[6][6].setUpTurn();
+        grid[6][8].setRightTurn();
+        grid[8][8].setDownTurn();
+        grid[8][6].setLeftTurn();
     }
 }
