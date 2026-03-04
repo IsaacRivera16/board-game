@@ -178,7 +178,7 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
         int my = e.getY();
         if (mx >= dice.x && mx <= dice.x + dice.w && my >= dice.y && my <= dice.y + dice.h) {
             roll();
-
+//
             int currentPlayer = -1;
             for (int i = 0; i < whoPlays.length; i++) {
                 if (whoPlays[i]) currentPlayer = i;
