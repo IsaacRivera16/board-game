@@ -5,21 +5,6 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.prefs.Preferences;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
 {
     private boolean[] keys;
@@ -188,7 +173,7 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
             if (!ball.onBoard) {
                 if (diceNum == 6) {
                     if (currentPlayer == 0) ball.setGridPosition(grid, 6, 1);   // blue
-                    if (currentPlayer == 1) ball.setGridPosition(grid, 1, 8);   // green
+                    if (currentPlayer == 1) ball.setGridPosition(grid, 2, 8);   // green
                     if (currentPlayer == 2) ball.setGridPosition(grid, 6, 13);  // red
                     if (currentPlayer == 3) ball.setGridPosition(grid, 8, 13);  // yellow
                 } else {

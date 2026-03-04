@@ -16,7 +16,18 @@ public class Ball extends Brick {
         safe = false;
         row = -1;
         col = -1;
-        direction = "right";
+        if(co.equals("blue")){
+            direction = "right";
+        }
+        else if(co.equals("red")){
+            direction = "up";
+        }
+        else if(co.equals("green")){
+            direction = "down";
+        }
+        else{
+            direction="left";
+        }
         onBoard = false;
     }
 
