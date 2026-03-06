@@ -10,6 +10,7 @@ public class Ball extends Brick {
     private String direction;
     boolean onBoard;
     int ballNum;
+    int steps;
 
 
     public Ball(int ex, int wy, int wd, int ht, String co,int b) {
