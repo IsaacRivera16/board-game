@@ -157,6 +157,7 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
         int my = e.getY();
         if (mx >= dice.x && mx <= dice.x + dice.w && my >= dice.y && my <= dice.y + dice.h) {
             roll();
+        }
 //
             int currentPlayer = -1;
             for (int i = 0; i < whoPlays.length; i++) {
@@ -165,50 +166,13 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
             if (currentPlayer == -1) return;
             Ball ball = players.get(currentPlayer).get(0);
             if (!ball.onBoard) {
-                if (diceNum == 6) {
-                    if (currentPlayer == 0) ball.setGridPosition(grid, 6, 1);   // blue
-                    if (currentPlayer == 1) ball.setGridPosition(grid, 2, 8);   // green
-                    if (currentPlayer == 2) ball.setGridPosition(grid, 13, 6);  // red
-                    if (currentPlayer == 3) ball.setGridPosition(grid, 8, 13);  // yellow
-                }
-                else{
-                    if(whoPlays[3]){
-                        whoPlays[0]=true;
-                    }
-                    else{
-                        whoPlays[currentPlayer+1]=true;
-                    }
-                    whoPlays[currentPlayer]=false;
-                }
+                notOnBoard(currentPlayer,ball);
             } else {
-
-                for (int i = 0; i < diceNum; i++) {
-                    if(ball.steps>5){
-                        ball.moveOneSquare(grid);
-                    }
-                    else{
-                        if(ball.steps-diceNum>=0){
-                            ball.moveOneSquare(grid);
-                        }
-                    }
-
-                }
-                if((ball.steps-diceNum)>=0){
-                    ball.lowerSteps(diceNum);
-                }
-                if(diceNum!=6){
-                    if(whoPlays[3]){
-                        whoPlays[0]=true;
-                    }
-                    else{
-                        whoPlays[currentPlayer+1]=true;
-                    }
-                    whoPlays[currentPlayer]=false;
-                }
+                moveBall(ball,currentPlayer);
             }
 
             repaint();
-        }
+
     }
     @Override
     public void mouseReleased(MouseEvent e) {
@@ -273,10 +237,20 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
 
 
     public void moveBall(Ball ball, int currentPlayer){
-        for (int i = 0; i < diceNum; i++) {  //Moves ball diceNum times
-            ball.moveOneSquare(grid);
+        for (int i = 0; i < diceNum; i++) {
+            if(ball.steps>5){
+                ball.moveOneSquare(grid);
+            }
+            else{
+                if(ball.steps-diceNum>=0){
+                    ball.moveOneSquare(grid);
+                }
+            }
         }
-        if(diceNum!=6){   //Moves to next player
+        if((ball.steps-diceNum)>=0){
+            ball.lowerSteps(diceNum);
+        }
+        if(diceNum!=6){
             if(whoPlays[3]){
                 whoPlays[0]=true;
             }
