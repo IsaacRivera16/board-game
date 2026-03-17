@@ -20,18 +20,22 @@ public class Ball extends Brick {
         row = -1;
         col = -1;
         ballNum=b;
-        steps=60;
+
     if(co.equals("blue")){
             direction = "right";
+        steps=60;
         }
         else if(co.equals("red")){
             direction = "up";
+        steps=60;
         }
         else if(co.equals("green")){
             direction = "down";
+        steps=59;
         }
         else{
             direction="left";
+        steps=60;
         }
         onBoard = false;
     }
