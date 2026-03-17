@@ -10,7 +10,7 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
     private boolean[] keys;
     int te=0;
     private boolean[] whoPlays;
-    private int diceNum;
+    private int diceNum,mx, my;;
     private ArrayList<ArrayList<Ball>> players;
     ArrayList<Ball> red,blue,yellow,green;
     private Brick background;
@@ -20,6 +20,7 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
     private boolean gameOver=false;
     private boolean gameStart=false;
     private boolean alive=false;
+    private Color newB,newG,newR,newY;
     private Square dice;
 
     public BreakOut() // create all instance in here
@@ -46,26 +47,6 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
         diceNum=(int)(Math.random()*6)+1;
     }
 
-    public void game(){
-        if(diceNum==6){
-            if(whoPlays[0]){
-                players.get(0).get(0).setX(60); //blue
-                players.get(0).get(0).setY(310);
-            }
-            if(whoPlays[1]){
-                players.get(1).get(0).setX(410); //green
-                players.get(1).get(0).setY(60);
-            }
-            if(whoPlays[2]){
-                players.get(2).get(0).setX(310); //red
-                players.get(2).get(0).setY(660);
-            }
-            if(whoPlays[3]){
-                players.get(3).get(0).setX(660); //yellow
-                players.get(3).get(0).setY(410);
-            }
-        }
-    }
     public void paint( Graphics window )// all other paint methods and game logic goes in here.
     {
         //background.paint(window);
@@ -102,6 +83,19 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
             for(Ball i: x){
                 i.paint(window);
             }
+        }
+
+        if(whoPlays[0]){
+            dice.setColor(newB);
+        }
+        if(whoPlays[1]){
+            dice.setColor(newG);
+        }
+        if(whoPlays[2]){
+            dice.setColor(newR);
+        }
+        if(whoPlays[3]){
+            dice.setColor(newY);
         }
 
         if(keys[0]){
@@ -220,8 +214,78 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
     @Override
     public void mouseExited(MouseEvent e) {
 
+
     }
+
+    public void notOnBoard(int curPlay, Ball b){
+        if (diceNum == 6) {
+            if (curPlay == 0) b.setGridPosition(grid, 6, 1);   // blue
+            if (curPlay == 1) b.setGridPosition(grid, 2, 8);   // green
+            if (curPlay == 2) b.setGridPosition(grid, 13, 6);  // red
+            if (curPlay == 3) b.setGridPosition(grid, 8, 13);  // yellow
+        }
+        else{
+            if(whoPlays[3]){
+                whoPlays[0]=true;
+            }
+            else{
+                whoPlays[curPlay+1]=true;
+            }
+            whoPlays[curPlay]=false;
+        }
+    }
+
+    public boolean onStart(Ball ba){
+
+
+        if(whoPlays[0]){
+            if(ba.getX()==grid[6][1].x){
+                return true;
+            }
+        }
+        if(whoPlays[1]){
+            if(ba.getX()==grid[2][8].x){
+                return true;
+            }
+        }
+        if(whoPlays[2]){
+            if(ba.getX()==grid[13][6].x){
+                return true;
+            }
+        }
+        if(whoPlays[3]){
+            if(ba.getX()==grid[8][13].x){
+                return true;
+            }
+        }
+        return false;
+
+
+    }
+
+
+
+    public void moveBall(Ball ball, int currentPlayer){
+        for (int i = 0; i < diceNum; i++) {  //Moves ball diceNum times
+            ball.moveOneSquare(grid);
+        }
+        if(diceNum!=6){   //Moves to next player
+            if(whoPlays[3]){
+                whoPlays[0]=true;
+            }
+            else{
+                whoPlays[currentPlayer+1]=true;
+            }
+            whoPlays[currentPlayer]=false;
+        }
+    }
+
     public void setGrid(){
+        newB=new Color(73,73,153);
+        newG=new Color(73,153,73);
+        newR=new Color(153,73,73);
+        newY=new Color(153,153,73);
+
         ArrayList<Ball> red = new ArrayList<>();
         ArrayList<Ball> blue = new ArrayList<>();
         ArrayList<Ball> yellow = new ArrayList<>();
