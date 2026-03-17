@@ -13,14 +13,15 @@ public class Ball extends Brick {
     int steps;
 
 
-    public Ball(int ex, int wy, int wd, int ht, String co,int b) {
+    public Ball(int ex, int wy, int wd, int ht, String co,int b){
         super(ex, wy, wd, ht);
         color = co;
         safe = false;
         row = -1;
         col = -1;
         ballNum=b;
-        if(co.equals("blue")){
+        steps=60;
+    if(co.equals("blue")){
             direction = "right";
         }
         else if(co.equals("red")){
@@ -50,6 +51,9 @@ public class Ball extends Brick {
     public int getCol() { return col; }
     public String getDirection() { return direction; }
     public void setDirection(String dir) { direction = dir; }
+    public void lowerSteps(int num){
+        steps = steps-num;
+    }
 
 
     public void moveOneSquare(Square[][] grid) {
