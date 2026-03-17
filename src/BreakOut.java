@@ -21,6 +21,9 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
     private boolean gameStart=false;
     private boolean alive=false;
     private Square dice;
+    private Color newB,newG,newR,newY;
+    private boolean choosingTime=false;
+
 
     public BreakOut() // create all instance in here
     {
@@ -46,26 +49,9 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
         diceNum=(int)(Math.random()*6)+1;
     }
 
-    public void game(){
-        if(diceNum==6){
-            if(whoPlays[0]){
-                players.get(0).get(0).setX(60); //blue
-                players.get(0).get(0).setY(310);
-            }
-            if(whoPlays[1]){
-                players.get(1).get(0).setX(410); //green
-                players.get(1).get(0).setY(60);
-            }
-            if(whoPlays[2]){
-                players.get(2).get(0).setX(310); //red
-                players.get(2).get(0).setY(660);
-            }
-            if(whoPlays[3]){
-                players.get(3).get(0).setX(660); //yellow
-                players.get(3).get(0).setY(410);
-            }
-        }
-    }
+
+
+
     public void paint( Graphics window )// all other paint methods and game logic goes in here.
     {
         //background.paint(window);
@@ -104,10 +90,20 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
             }
         }
 
-        if(keys[0]){
-            roll();
-            keys[0]=false;
+        if(whoPlays[0]){
+            dice.setColor(newB);
         }
+        if(whoPlays[1]){
+            dice.setColor(newG);
+        }
+        if(whoPlays[2]){
+            dice.setColor(newR);
+        }
+        if(whoPlays[3]){
+            dice.setColor(newY);
+        }
+
+
         dice.paint(window);
         window.setFont(new Font("Arial", Font.BOLD, 50));
         window.setColor(Color.black);
@@ -163,34 +159,47 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
         int my = e.getY();
         if (mx >= dice.x && mx <= dice.x + dice.w && my >= dice.y && my <= dice.y + dice.h) {
             roll();
-//
+        }
+
+
+        //SCRAP ALL THIS
+        //MAKE METHODS THAT ICNLUDE MOUSEPRESSED IN THEM, DO NOT PUT THE METHODS IN MOUSEPRESSED
+
             int currentPlayer = -1;
-            for (int i = 0; i < whoPlays.length; i++) {
-                if (whoPlays[i]) currentPlayer = i;
+            ArrayList<Ball> player = new ArrayList<>();
+            Ball ball = new Ball(-1,-1,-1,-1,"white",-1);
+
+            for (int i = 0; i < whoPlays.length; i++) {   //Checks to see who's up
+                if (whoPlays[i]){
+                    currentPlayer = i;
+                    player = players.get(currentPlayer);
+                }
+
             }
-            if (currentPlayer == -1) return;
-            Ball ball = players.get(currentPlayer).get(0);
-            if (!ball.onBoard) {
-                if (diceNum == 6) {
-                    if (currentPlayer == 0) ball.setGridPosition(grid, 6, 1);   // blue
-                    if (currentPlayer == 1) ball.setGridPosition(grid, 2, 8);   // green
-                    if (currentPlayer == 2) ball.setGridPosition(grid, 13, 6);  // red
-                    if (currentPlayer == 3) ball.setGridPosition(grid, 8, 13);  // yellow
+            if (currentPlayer == -1) return; //Error Checker
+
+            if(nextAvail(player)==0){
+                ball = player.get(0);
+            }
+
+            if(diceNum==6){
+                if(hasPlayerActive(players.get(currentPlayer)) && !onStart(ball)){
+                    chooseBall(mx,my,players.get(currentPlayer),currentPlayer);
+                    System.out.println("yay");
                 }
-                else{
-                    if(whoPlays[3]){
-                        whoPlays[0]=true;
-                    }
-                    else{
-                        whoPlays[currentPlayer+1]=true;
-                    }
-                    whoPlays[currentPlayer]=false;
+
+                else if (!ball.onBoard) {
+                    notOnBoard(currentPlayer, ball);    //When there are no balls on board
+                    ball.onBoard=true;
                 }
-            } else {
-                for (int i = 0; i < diceNum; i++) {
+            }
+
+
+            else {
+                for (int i = 0; i < diceNum; i++) {  //Moves ball diceNum times
                     ball.moveOneSquare(grid);
                 }
-                if(diceNum!=6){
+                if(diceNum!=6){   //Moves to next player
                     if(whoPlays[3]){
                         whoPlays[0]=true;
                     }
@@ -202,6 +211,61 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
             }
 
             repaint();
+
+    }
+
+
+public boolean onStart(Ball ba){
+
+        if(whoPlays[0]){
+            if(ba.getX()==grid[6][1].x){
+                return true;
+            }
+        }
+    if(whoPlays[1]){
+        if(ba.getX()==grid[2][8].x){
+            return true;
+        }
+    }
+    if(whoPlays[2]){
+        if(ba.getX()==grid[13][6].x){
+            return true;
+        }
+    }
+    if(whoPlays[3]){
+        if(ba.getX()==grid[8][13].x){
+            return true;
+        }
+    }
+        return false;
+
+}
+
+    public void chooseBall(int x, int y, ArrayList<Ball> player, int curP){
+
+        if(whoPlays[0]){ //b
+            if(x>=grid[0][0].x && x<=(grid[0][5].x + grid[0][5].w) && y>=grid[0][0].y && y<=grid[5][5].y + grid[5][5].h){
+                notOnBoard(curP,player.get(nextAvail(player)));
+                System.out.println("Blue");
+            }
+        }
+        if(whoPlays[1]){ //g
+            if(x>=grid[0][0].x && x<=(grid[0][5].x + grid[0][5].w) && y>=grid[0][0].y && y<=grid[5][5].y + grid[5][5].h){
+                notOnBoard(curP,player.get(nextAvail(player)));
+                System.out.println("Green");
+            }
+        }
+        if(whoPlays[2]){ //r
+            if(x>=grid[0][0].x && x<=(grid[0][5].x + grid[0][5].w) && y>=grid[0][0].y && y<=grid[5][5].y + grid[5][5].h){
+                notOnBoard(curP,player.get(nextAvail(player)));
+                System.out.println("Red");
+            }
+        }
+        if(whoPlays[3]){ //y
+            if(x>=grid[0][0].x && x<=(grid[0][5].x + grid[0][5].w) && y>=grid[0][0].y && y<=grid[5][5].y + grid[5][5].h){
+                notOnBoard(curP,player.get(nextAvail(player)));
+                System.out.println("Yellow");
+            }
         }
     }
     @Override
@@ -216,7 +280,51 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
     public void mouseExited(MouseEvent e) {
 
     }
+
+    public boolean hasPlayerActive(ArrayList<Ball> player){
+        for(Ball x:player){
+            if(x.onBoard){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int nextAvail(ArrayList<Ball> player){
+        for(int x=0; x<player.size(); x++){
+            if(!player.get(x).onBoard){
+                return x;
+            }
+        }
+        return -1;
+    }
+
+    public void notOnBoard(int curPlay, Ball b){
+        if (diceNum == 6) {
+            if (curPlay == 0) b.setGridPosition(grid, 6, 1);   // blue
+            if (curPlay == 1) b.setGridPosition(grid, 2, 8);   // green
+            if (curPlay == 2) b.setGridPosition(grid, 13, 6);  // red
+            if (curPlay == 3) b.setGridPosition(grid, 8, 13);  // yellow
+        }
+        else{
+            if(whoPlays[3]){
+                whoPlays[0]=true;
+            }
+            else{
+                whoPlays[curPlay+1]=true;
+            }
+            whoPlays[curPlay]=false;
+        }
+    }
+
     public void setGrid(){
+
+        newB=new Color(73,73,153);
+        newG=new Color(73,153,73);
+        newR=new Color(153,73,73);
+        newY=new Color(153,153,73);
+
+
         ArrayList<Ball> red = new ArrayList<>();
         ArrayList<Ball> blue = new ArrayList<>();
         ArrayList<Ball> yellow = new ArrayList<>();

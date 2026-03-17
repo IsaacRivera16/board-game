@@ -5,7 +5,7 @@ import javax.swing.*;
 
 public class Ball extends Brick {
     private String color;
-    boolean safe;
+    boolean safe, finish;
     private int row, col;
     private String direction;
     boolean onBoard;
@@ -42,6 +42,8 @@ public class Ball extends Brick {
         setX(grid[row][col].x + grid[row][col].w / 2 - getW() / 2);
         setY(grid[row][col].y + grid[row][col].h / 2 - getH() / 2);
     }
+
+
 
 
     public int getRow() { return row; }
