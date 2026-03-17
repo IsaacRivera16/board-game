@@ -183,12 +183,19 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
             } else {
 
                 for (int i = 0; i < diceNum; i++) {
-                    if(ball.steps>0){
+                    if(ball.steps>5){
                         ball.moveOneSquare(grid);
+                    }
+                    else{
+                        if(ball.steps-diceNum>=0){
+                            ball.moveOneSquare(grid);
+                        }
                     }
 
                 }
-                ball.lowerSteps(diceNum);
+                if((ball.steps-diceNum)>=0){
+                    ball.lowerSteps(diceNum);
+                }
                 if(diceNum!=6){
                     if(whoPlays[3]){
                         whoPlays[0]=true;
