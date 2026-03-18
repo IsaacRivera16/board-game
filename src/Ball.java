@@ -3,6 +3,9 @@ import javax.swing.*;
 //BBoolean finish
 //
 
+
+
+
 public class Ball extends Brick {
     private String color;
     boolean safe, finish;
@@ -11,6 +14,10 @@ public class Ball extends Brick {
     boolean onBoard;
     int ballNum;
     int steps;
+    int sx;
+    int sy;
+
+
 
 
     public Ball(int ex, int wy, int wd, int ht, String co,int b){
@@ -20,25 +27,57 @@ public class Ball extends Brick {
         row = -1;
         col = -1;
         ballNum=b;
-
-    if(co.equals("blue")){
-            direction = "right";
+        sx=ex;
+        sy=wy;
         steps=60;
+
+
+
+
+        if(co.equals("blue")){
+            direction = "right";
         }
         else if(co.equals("red")){
             direction = "up";
-        steps=60;
         }
         else if(co.equals("green")){
             direction = "down";
-        steps=59;
         }
         else{
             direction="left";
-        steps=60;
         }
         onBoard = false;
     }
+
+
+    public String getColor(){
+        return color;
+    }
+
+
+    public void sendHome() {
+        setX(sx);
+        setY(sy);
+        row = -1;
+        col = -1;
+        onBoard = false;
+        steps=60;
+
+
+        if(color.equals("blue")){
+            direction = "right";
+        }
+        else if(color.equals("red")){
+            direction = "up";
+        }
+        else if(color.equals("green")){
+            direction = "down";
+        }
+        else{
+            direction="left";
+        }
+    }
+
 
     public void setGridPosition(Square[][] grid, int r, int c) {
         row = r;
@@ -47,6 +86,10 @@ public class Ball extends Brick {
         setX(grid[row][col].x + grid[row][col].w / 2 - getW() / 2);
         setY(grid[row][col].y + grid[row][col].h / 2 - getH() / 2);
     }
+
+
+
+
 
 
 
@@ -60,8 +103,20 @@ public class Ball extends Brick {
     }
 
 
+
+
+
+
+
+
     public void moveOneSquare(Square[][] grid) {
         if (!onBoard) return;
+
+
+
+
+
+
 
 
         if (grid[row][col].upTurn) direction = "up";
@@ -74,15 +129,33 @@ public class Ball extends Brick {
         else if (grid[row][col].yellowTurn && color.equals("yellow")) direction = "left";
 
 
+
+
+
+
+
+
         if (direction.equals("up")) row--;
         else if (direction.equals("down")) row++;
         else if (direction.equals("left")) col--;
         else if (direction.equals("right")) col++;
 
 
+
+
+
+
+
+
         setX(grid[row][col].x + grid[row][col].w / 2 - getW() / 2);
         setY(grid[row][col].y + grid[row][col].h / 2 - getH() / 2);
     }
+
+
+
+
+
+
 
 
     // Draw the ball
@@ -93,6 +166,12 @@ public class Ball extends Brick {
         else window.setColor(new Color(230, 230, 100));
 
 
+
+
+
+
+
+
         window.fillOval(getX(), getY(), getW(), getH());
         window.setColor(Color.BLACK);
         window.drawOval(getX(), getY(), getW(), getH());
@@ -101,5 +180,19 @@ public class Ball extends Brick {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
     public void setSafe(boolean s) { safe = s; }
 }
+
+
