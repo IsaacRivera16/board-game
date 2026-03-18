@@ -511,7 +511,7 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
                 }
                 currentx+=howMuch;
 
-
+//
 
 
             }

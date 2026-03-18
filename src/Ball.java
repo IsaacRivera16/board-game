@@ -53,7 +53,7 @@ public class Ball extends Brick {
     public String getColor(){
         return color;
     }
-//
+
 
     public void sendHome() {
         setX(sx);
