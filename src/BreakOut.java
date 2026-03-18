@@ -8,23 +8,16 @@ import java.util.prefs.Preferences;
 
 
 
-class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
+class BreakOut extends JPanel implements Runnable, MouseListener
 {
-    private boolean[] keys;
-    int te=0;
     private boolean[] whoPlays;
     private int diceNum,mx, my;;
     private ArrayList<ArrayList<Ball>> players;
-    ArrayList<Ball> red,blue,yellow,green;
-    private Brick background;
-    private Ball r1,r2,r3,r4,g1,g2,g3,g4,y1,y2,y3,y4,b1,b2,b3,b4;
     private Square[][] grid;
     private ArrayList< Brick > bricks;
-    private boolean gameOver=false;
-    private boolean gameStart=false;
-    private boolean alive=false;
     private Color newB,newG,newR,newY;
     private Square dice;
+    private boolean click;
 
 
 
@@ -32,32 +25,21 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
     public BreakOut() // create all instance in here
     {
 // breakout
+        click=false;
         setSize(750,750);
         grid=new Square[15][15];
         players = new ArrayList<>();
         dice= new Square(340,340, 70,70, Color.LIGHT_GRAY);
 
-
-
-
         setGrid();
-
-
-
 
         whoPlays = new boolean[4];
         whoPlays[0]=true;
-        keys = new boolean[5];
 
-
-
-
-        addKeyListener( this );    //
         addMouseListener(this);
         setFocusable( true );     // Do NOT DELETE these three lines
         new Thread(this).start();
     }
-
 
 
 
@@ -67,15 +49,10 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
 
 
 
-
     public void paint( Graphics window )// all other paint methods and game logic goes in here.
     {
         //background.paint(window);
         int middleBoard=grid[7][7].getCenter();
-
-
-
-
         int[] triCorner1X = {grid[6][6].x,middleBoard,grid[6][8].x+grid[6][8].w};
         int[] triCorner1Y = {grid[6][6].y,middleBoard,grid[6][8].y};
         int[] triCorner2X = {grid[6][6].x,middleBoard,grid[8][6].x};
@@ -84,18 +61,10 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
         int[] triCorner3Y = {grid[8][6].y+grid[8][6].h,middleBoard,grid[8][8].y+grid[8][8].h};
         int[] triCorner4X = {grid[6][8].x+grid[6][8].w,middleBoard,grid[8][8].x+grid[8][8].w};
         int[] triCorner4Y = {grid[6][8].y,middleBoard,grid[8][8].y+grid[8][8].h};
-
-
-
-
         Polygon tri1= new Polygon(triCorner1X, triCorner1Y,3);
         Polygon tri2= new Polygon(triCorner2X, triCorner2Y,3);
         Polygon tri3= new Polygon(triCorner3X, triCorner3Y,3);
         Polygon tri4= new Polygon(triCorner4X, triCorner4Y,3);
-
-
-
-
         for(Square[] x:grid){
             for(Square i:x){
                 i.paint(window);
@@ -118,6 +87,7 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
 
 
 
+
         Color[] playerColors = {newB, newG, newR, newY};
         for(int i = 0; i < whoPlays.length; i++){
             if(whoPlays[i]){
@@ -125,51 +95,21 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
             }
         }
 
-
-
-
-        if(keys[0]){
-            roll();
-            keys[0]=false;
+        if(click){
+            gameRoll();
+            click=!click;
         }
+
+
+
+
         dice.paint(window);
         window.setFont(new Font("Arial", Font.BOLD, 50));
         window.setColor(Color.black);
         window.drawString("" + diceNum, dice.getCenter()-15, dice.getCenter()+20);
     }
     // only edit if you would like to add more key functions
-    public void keyPressed(KeyEvent e)
-    {
-        if( e.getKeyCode()  == KeyEvent.VK_UP )
-        {
-            keys[0]=true;
-        }
-        if( e.getKeyCode()  == KeyEvent.VK_LEFT )
-        {
-            keys[1]=true;
-        }
-        if( e.getKeyCode()  == KeyEvent.VK_RIGHT )
-        {
-            keys[2]=true;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            keys[3] = true;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            keys[4] = true;
-        }
-    }
-    // do not edit anything from this point on!!!
-    public void keyTyped(KeyEvent e)
-    {
-        keyPressed( e );
-    }
-    public void keyReleased(KeyEvent e)    {
 
-
-
-
-    }
     public void run() {
         try {
             while (true) {
@@ -180,41 +120,26 @@ class BreakOut extends JPanel implements Runnable, KeyListener, MouseListener
             e.printStackTrace();
         }
     }
+
+    public void gameRoll(){
+        if (mx >= dice.x && mx <= dice.x + dice.w && my >= dice.y && my <= dice.y + dice.h) {
+            roll();
+
+        }
+
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
-
-
-
 
     }
     @Override
     public void mousePressed(MouseEvent e) {
-        int mx = e.getX();
-        int my = e.getY();
-        if (mx >= dice.x && mx <= dice.x + dice.w && my >= dice.y && my <= dice.y + dice.h) {
-            roll();
-            int currentPlayer = -1;
-            for (int i = 0; i < whoPlays.length; i++) {
-                if (whoPlays[i]) currentPlayer = i;
-            }
-            if (currentPlayer == -1) return;
-            Ball ball = players.get(currentPlayer).get(0);
-            if (!ball.onBoard) {
-                notOnBoard(currentPlayer,ball);
-            } else {
-                moveBall(ball,currentPlayer);
-            }
-        }
 
-
-
-
-
-
+        mx = e.getX();
+        my = e.getY();
+        click=true;
         repaint();
-
-
-
 
     }
     @Override
