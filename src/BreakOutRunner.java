@@ -11,7 +11,7 @@ class BreakOutRunner extends JFrame
     {
         super("Brick Breaker BreakOut");
 
-
+//
         setSize(WIDTH,HEIGHT);
 
 
