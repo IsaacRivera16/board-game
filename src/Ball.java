@@ -30,6 +30,7 @@ public class Ball extends Brick {
         sx=ex;
         sy=wy;
         steps=60;
+        onBoard=false;
 
 
 
