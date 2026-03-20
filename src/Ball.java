@@ -31,6 +31,7 @@ public class Ball extends Brick {
         sy=wy;
         steps=60;
         onBoard=false;
+        finish=false;
 
 
 
@@ -54,6 +55,7 @@ public class Ball extends Brick {
     public String getColor(){
         return color;
     }
+
 
 
     public void sendHome() {
