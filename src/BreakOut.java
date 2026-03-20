@@ -113,6 +113,10 @@ class BreakOut extends JPanel implements Runnable, MouseListener
         if(finishGame()){
             return;
         }
+        if(click){
+            System.out.println(Arrays.toString(activeBalls));
+
+        }
 
 
         if(click && !choosingTime){
@@ -121,6 +125,8 @@ class BreakOut extends JPanel implements Runnable, MouseListener
                 gameRoll();
             }
         }
+
+
 
 
 
@@ -188,7 +194,12 @@ class BreakOut extends JPanel implements Runnable, MouseListener
     public void gameRoll(){
 
           roll();
-          currentBall=players.get(playerNum).get(0);
+          if(activeBalls[playerNum]==0){
+              currentBall=players.get(playerNum).get(0);
+          }
+          else{
+              currentBall=players.get(playerNum).get(nextAvail())
+          }
             if(diceNum==6){
                 if(activeBalls[playerNum]>0){
                     choosingTime=true;
@@ -231,6 +242,10 @@ class BreakOut extends JPanel implements Runnable, MouseListener
             return 3;
         }
         return -2;
+    }
+
+    public int nextAvail(){
+        for()
     }
 
     public void rotatePlayer(){
