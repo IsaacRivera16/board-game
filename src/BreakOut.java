@@ -9,6 +9,10 @@ import java.util.prefs.Preferences;
 
 
 
+
+
+
+
 class BreakOut extends JPanel implements Runnable, MouseListener
 {
     private boolean[] whoPlays;
@@ -26,6 +30,10 @@ class BreakOut extends JPanel implements Runnable, MouseListener
 
 
 
+
+
+
+
     public BreakOut() // create all instance in here
     {
 // breakout
@@ -35,17 +43,24 @@ class BreakOut extends JPanel implements Runnable, MouseListener
         players = new ArrayList<>();
         dice= new Square(340,340, 70,70, Color.LIGHT_GRAY);
 
+
         activeBalls = new int[]{0,0,0,0};
         playerNum=0;
         choosingTime=false;
 
 
 
+
+
+
         setGrid();
         currentBall=players.get(playerNum).get(0);
 
+
         whoPlays = new boolean[4];
         whoPlays[0]=true;
+
+
 
 
         addMouseListener(this);
@@ -55,9 +70,15 @@ class BreakOut extends JPanel implements Runnable, MouseListener
 
 
 
+
+
+
     public void roll(){
         diceNum=(int)(Math.random()*6)+1;
     }
+
+
+
 
 
 
@@ -96,7 +117,9 @@ class BreakOut extends JPanel implements Runnable, MouseListener
             }
         }
 
+
         Color[] playerColors = {newB, newG, newR, newY};
+
 
         for(int x=0; x< whoPlays.length; x++){
             if(whoPlays[x]) {
@@ -104,19 +127,25 @@ class BreakOut extends JPanel implements Runnable, MouseListener
             }
         }
 
+
         for(int i = 0; i < whoPlays.length; i++){
             if(whoPlays[i]){
                 dice.setColor(playerColors[i]);
             }
         }
 
+
         if(finishGame()){
             return;
         }
+        /*
         if(click){
             System.out.println(Arrays.toString(activeBalls));
-
         }
+
+         */
+
+
 
 
         if(click && !choosingTime){
@@ -125,6 +154,11 @@ class BreakOut extends JPanel implements Runnable, MouseListener
                 gameRoll();
             }
         }
+
+
+
+
+
 
 
 
@@ -162,13 +196,20 @@ class BreakOut extends JPanel implements Runnable, MouseListener
                 }
 
 
+
+
                 //System.out.println("Active players of " + playerNum + "is " + activeBalls[playerNum]);
                 //System.out.println("rotate");
                 rotatePlayer();
 
+
             }
             click=!click;
         }
+
+
+
+
 
 
 
@@ -179,6 +220,7 @@ class BreakOut extends JPanel implements Runnable, MouseListener
         window.drawString("" + diceNum, dice.getCenter()-15, dice.getCenter()+20);
     }
     // only edit if you would like to add more key functions
+
 
     public void run() {
         try {
@@ -191,41 +233,47 @@ class BreakOut extends JPanel implements Runnable, MouseListener
         }
     }
 
+
     public void gameRoll(){
 
-          roll();
-          if(activeBalls[playerNum]==0){
-              currentBall=players.get(playerNum).get(0);
-          }
-          else{
-              currentBall=players.get(playerNum).get(nextAvail())
-          }
-            if(diceNum==6){
-                if(activeBalls[playerNum]>0){
-                    choosingTime=true;
-                    return;
-                }
-                else{
-                    notOnBoard(currentBall);
-                    increaseActive(playerNum);
-                    rotatePlayer();
-                }
+
+        roll();
+        if(activeBalls[playerNum]==0){
+            currentBall=players.get(playerNum).get(0);
+        }
+        else{
+            currentBall=players.get(playerNum).get(nextAvail());
+        }
+        if(diceNum==6){
+            if(activeBalls[playerNum]>0){
+                choosingTime=true;
+                return;
             }
-             else if(activeBalls[playerNum]==1){
-               moveBall(currentBall);
-               rotatePlayer();
-             }
-             else if(activeBalls[playerNum]>1){
-                 choosingTime=true;
-                 return;
-            }
-             else{
+            else{
+                notOnBoard(currentBall);
+                increaseActive(playerNum);
                 rotatePlayer();
             }
+        }
+        else if(activeBalls[playerNum]==1){
+            moveBall(currentBall);
+            rotatePlayer();
+        }
+        else if(activeBalls[playerNum]>1){
+            choosingTime=true;
+            return;
+        }
+        else{
+            rotatePlayer();
+        }
+
+
+
 
 
 
     }
+
 
     public int checkBallClick(){
         ArrayList<Ball> play = players.get(playerNum);
@@ -244,9 +292,23 @@ class BreakOut extends JPanel implements Runnable, MouseListener
         return -2;
     }
 
-    public int nextAvail(){
-        for()
+
+    public int nextAvail() {
+        ArrayList<Ball> play = players.get(playerNum);
+
+
+        for (int i = 0; i < play.size(); i++) {
+            if (play.get(i).onBoard) {
+                return i;
+            }
+        }
+
+
+        return -1;
     }
+
+
+
 
     public void rotatePlayer(){
         whoPlays[playerNum]=false;
@@ -259,17 +321,21 @@ class BreakOut extends JPanel implements Runnable, MouseListener
         }
     }
 
+
     @Override
     public void mouseClicked(MouseEvent e) {
+
 
     }
     @Override
     public void mousePressed(MouseEvent e) {
 
+
         mx = e.getX();
         my = e.getY();
         click=true;
         repaint();
+
 
     }
     @Override
@@ -278,11 +344,15 @@ class BreakOut extends JPanel implements Runnable, MouseListener
     @Override
     public void mouseEntered(MouseEvent e) {
 
+
     }
     @Override
     public void mouseExited(MouseEvent e) {
 
+
     }
+
+
 
 
     public void notOnBoard(Ball b){
@@ -291,6 +361,8 @@ class BreakOut extends JPanel implements Runnable, MouseListener
         if (playerNum == 2) b.setGridPosition(grid, 13, 6);  // red
         if (playerNum == 3) b.setGridPosition(grid, 8, 13);  // yellow
     }
+
+
 
 
     public boolean finishGame(){
@@ -304,6 +376,9 @@ class BreakOut extends JPanel implements Runnable, MouseListener
 
 
 
+
+
+
     public void moveBall(Ball ball){
         //SOMWEHERE IN THIS MEHTOD, WHEN STEPS = 0, MAKE ball.finish=true
         for (int i = 0; i < diceNum; i++) {
@@ -314,46 +389,71 @@ class BreakOut extends JPanel implements Runnable, MouseListener
                 if(ball.steps-diceNum>=0){
                     ball.moveOneSquare(grid);
 
+
                 }
             }
         }
         if((ball.steps-diceNum)>=0){
             ball.lowerSteps(diceNum);
         }
+        if (ball.steps == 0) {
+            ball.finish = true;
+            decreaseActive(playerNum);
+        }
+
+
         checkCollision(ball);
     }
+
 
     public void increaseActive(int who){
         activeBalls[who]+=1;
     }
+
 
     public void decreaseActive(int who){
         activeBalls[who]-=1;
     }
 
 
+
+
     public void checkCollision(Ball currentBall) {
+
+
 
 
         int r = currentBall.getRow();
         int c = currentBall.getCol();
 
+
         if(r<0 || c<0) return;
 
+
         if(grid[r][c].safe) return;
+
+
 
 
         for(ArrayList<Ball> player : players){
             for(Ball other : player){
 
 
+
+
                 if(other == currentBall) continue;
+
+
 
 
                 if(!other.onBoard) continue;
 
 
+
+
                 if(other.getColor().equals(currentBall.getColor())) continue;
+
+
 
 
                 if(other.getRow() == r && other.getCol() == c){
@@ -378,11 +478,19 @@ class BreakOut extends JPanel implements Runnable, MouseListener
 
 
 
+
+
+
+
     public void setGrid(){
         newB=new Color(73,73,153);
         newG=new Color(73,153,73);
         newR=new Color(153,73,73);
         newY=new Color(153,153,73);
+
+
+
+
 
 
 
@@ -395,10 +503,18 @@ class BreakOut extends JPanel implements Runnable, MouseListener
 
 
 
+
+
+
+
         blue.add(new Ball(85,85,30,30,"blue",0));
         blue.add(new Ball(185,185,30,30,"blue",1));
         blue.add(new Ball(185,85,30,30,"blue",2));
         blue.add(new Ball(85,185,30,30,"blue",3));
+
+
+
+
 
 
 
@@ -412,11 +528,19 @@ class BreakOut extends JPanel implements Runnable, MouseListener
 
 
 
+
+
+
+
         //Adding red players
         red.add(new Ball(85,635,30,30,"red",0));
         red.add(new Ball(185,635,30,30,"red",1));
         red.add(new Ball(85,535,30,30,"red",2));
         red.add( new Ball(185,535,30,30,"red",3));
+
+
+
+
 
 
 
@@ -430,10 +554,18 @@ class BreakOut extends JPanel implements Runnable, MouseListener
 
 
 
+
+
+
+
         players.add(blue);
         players.add(green);
         players.add(red);
         players.add(yellow);
+
+
+
+
 
 
 
@@ -511,12 +643,19 @@ class BreakOut extends JPanel implements Runnable, MouseListener
                 }
                 currentx+=howMuch;
 
+
 //
+
+
 
 
             }
             currenty+=howMuch;
             currentx=0;
+
+
+
+
 
 
 
