@@ -1,6 +1,5 @@
 import javax.swing.*;
 
-
 class BreakOutRunner extends JFrame
 {
     private static final int WIDTH = 768;

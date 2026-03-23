@@ -119,9 +119,6 @@ public class Ball extends Brick {
 
 
 
-
-
-
         if (grid[row][col].upTurn) direction = "up";
         else if (grid[row][col].downTurn) direction = "down";
         else if (grid[row][col].leftTurn) direction = "left";
@@ -134,17 +131,10 @@ public class Ball extends Brick {
 
 
 
-
-
-
-
         if (direction.equals("up")) row--;
         else if (direction.equals("down")) row++;
         else if (direction.equals("left")) col--;
         else if (direction.equals("right")) col++;
-
-
-
 
 
 

@@ -381,9 +381,25 @@ class BreakOut extends JPanel implements Runnable, MouseListener
 
     public void moveBall(Ball ball){
         //SOMWEHERE IN THIS MEHTOD, WHEN STEPS = 0, MAKE ball.finish=true
+        boolean corner=false;
         for (int i = 0; i < diceNum; i++) {
             if(ball.steps>5){
                 ball.moveOneSquare(grid);
+                if((ball.getX() >= grid[6][6].x && ball.getX() <= grid[6][6].x + grid[6][6].w
+                        && ball.getY() >= grid[6][6].y && ball.getY() <= grid[6][6].y + grid[6][6].h)
+
+                        || (ball.getX() >= grid[6][8].x && ball.getX() <= grid[6][8].x + grid[6][8].w
+                        && ball.getY() >= grid[6][8].y && ball.getY() <= grid[6][8].y + grid[6][8].h)
+
+                        || (ball.getX() >= grid[8][6].x && ball.getX() <= grid[8][6].x + grid[8][6].w
+                        && ball.getY() >= grid[8][6].y && ball.getY() <= grid[8][6].y + grid[8][6].h)
+
+                        || (ball.getX() >= grid[8][8].x && ball.getX() <= grid[8][8].x + grid[8][8].w
+                        && ball.getY() >= grid[8][8].y && ball.getY() <= grid[8][8].y + grid[8][8].h)){
+                    ball.moveOneSquare(grid);
+                    corner=true;
+                }
+
             }
             else{
                 if(ball.steps-diceNum>=0){
@@ -394,6 +410,9 @@ class BreakOut extends JPanel implements Runnable, MouseListener
             }
         }
         if((ball.steps-diceNum)>=0){
+            if(corner){
+                ball.lowerSteps(1);
+            }
             ball.lowerSteps(diceNum);
         }
         if (ball.steps == 0) {
